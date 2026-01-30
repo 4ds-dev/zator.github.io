@@ -1,1 +1,1 @@
-# zator.github.io
+/index.html
