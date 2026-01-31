@@ -52,7 +52,12 @@
     text-decoration: none;
   }
 
-  img, video, canvas, svg {
+  img{
+    max-width: 100%;
+    display: block;
+  }
+  
+  video, canvas, svg {
     max-width: 100%;
     height: auto;
     display: block;
@@ -93,7 +98,7 @@
   .nav-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
@@ -587,7 +592,7 @@
       <div class="nav">
         <div class="nav-left">
           <a href="#" class="logo">
-			<img src="images/logo.svg" alt="Zator logo" height=34px weight=34px color=ffffff>
+			<img src="images/logo.svg" alt="Zator logo" height=34px weight=14px color=ffffff>
             Zator
           </a>
           <nav class="nav-links">
