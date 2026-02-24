@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
   <meta name="yandex-verification" content="1a3827f7b77dbf1a" />
   <style>
   :root {
@@ -19,7 +21,12 @@
     --text: #f1f5f9;
     --text-soft: #94a3b8;
     --text-muted: #64748b;
-    --primary: #06b6d4;
+	
+	--font-family: "Cascadia Mono", sans-serif;
+	--font-optical-sizing: auto;
+	--font-weight: 700;
+    
+	--primary: #06b6d4;
     --primary-light: #22d3ee;
     --primary-glow: rgba(34, 211, 238, 0.35);
     --accent: #3b82f6;
@@ -51,12 +58,16 @@
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Cascadia Mono', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.6;
+  }
+  h1, h2 {
+	
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
   /* Canvas для фракталов */
@@ -190,6 +201,7 @@
   .logo {
     font-weight: 800;
     font-size: 22px;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     letter-spacing: 0.5px;
     display: flex;
     align-items: center;
@@ -309,6 +321,8 @@
 
   .gradient-text {
     background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 50%, var(--purple) 100%);
+	font-family: "Playfair Display", serif;
+	font-style: italic;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -1044,7 +1058,7 @@
             <span>Пример: генерация персонажа</span>
             <span class="tag">Zator</span>
           </div>
-          <pre><code><div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>context = "Вы — дизайнер игровых персонажей."
+          <pre><code>context = "Вы — дизайнер игровых персонажей."
 
 var prompt = "Игровой персонаж кобольд-маг, чистый зеленый фон"
 var img = generate_img(prompt, context, 512, 512)
@@ -1227,6 +1241,21 @@ save_img(icon128, "icons/sword_128.png")</code></pre>
         </p>
       </div>
       <div class="articles-grid">
+		<article class="article-card">
+			<h4>Zator: Simplify AI Pipelines with KoboldCpp</h4>
+			<p class="article-desc">
+				Tired of writing boilerplate code for AI interactions? Meet Zator - a domain-specific language (DSL) designed to simplify AI content generation workflows with KoboldCpp and Stable Diffusion.
+			</p>
+			<div class="article-meta">
+				<span class="article-source">
+					<span class="platform platform-medium">Medium</span>
+				</span>
+				<span class="article-date">2026</span>
+			</div>
+			<div style="margin-top:14px;">
+				<a href="[ССЫЛКА_НА_СТАТЬЮ]" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+			</div>
+		</article>
         <article class="article-card">
           <h4>Zator: Специализированный язык программирования для AI-контента</h4>
           <p class="article-desc">
@@ -1608,5 +1637,4 @@ save_img(icon128, "icons/sword_128.png")</code></pre>
     })();
   </script>
 </body>
-
 </html>
