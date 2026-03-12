@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="images/icon-black.svg" rel="icon">
+  <title>Zator — язык для генерации AI-контента</title>
+  <meta name="description" content="Zator — специализированный язык программирования для генерации и обработки AI-контента с помощью KoboldCpp." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <meta name="yandex-verification" content="1a3827f7b77dbf1a" />
+  <style>
+  :root {
+    --bg: #020408;
+    --bg-soft: #03060c;
+    --panel: #060a14;
+    --panel-soft: #0a1120;
+    --text: #f1f5f9;
+    --text-soft: #94a3b8;
+    --text-muted: #64748b;
+	
+	--font-family: "Cascadia Mono", sans-serif;
+	--font-optical-sizing: auto;
+	--font-weight: 700;
+    
+	--primary: #06b6d4;
+    --primary-light: #22d3ee;
+    --primary-glow: rgba(34, 211, 238, 0.35);
+    --accent: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.25);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --purple: #8b5cf6;
+    --pink: #ec4899;
+    --radius: 16px;
+    --radius-sm: 12px;
+    --radius-lg: 24px;
+    --shadow-sm: 0 4px 20px rgba(0,0,0,0.5);
+    --shadow: 0 8px 40px rgba(0,0,0,0.6);
+    --shadow-lg: 0 20px 80px rgba(0,0,0,0.7);
+    --shadow-glow: 0 0 60px rgba(34, 211, 238, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Cascadia Mono', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  h1, h2 {
+	
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Canvas для фракталов */
+  #fractal-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Animated Background */
+  .bg-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .bg-gradient::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 10%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 80%, rgba(139, 92, 246, 0.02) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 90%, rgba(236, 72, 153, 0.02) 0%, transparent 50%);
+    animation: bgFloat 20s ease-in-out infinite;
+  }
+
+  @keyframes bgFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(2%, 2%) rotate(1deg); }
+    66% { transform: translate(-1%, 1%) rotate(-1deg); }
+  }
+
+  .bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 15%, transparent 70%);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img, video, canvas, svg {
+    max-width: 100%;
+    display: block;
+  }
+
+  code, pre {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    max-width: 100%;
+    overflow-x: auto;
+    word-wrap: break-word;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-soft);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--panel-soft);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+  }
+
+  /* Layout */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 32px);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    background: rgba(2, 4, 8, 0.9);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 72px;
+    padding: 0 8px;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo {
+    font-weight: 800;
+    font-size: 22px;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .logo img {
+    height: 34px;
+    width: auto;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    font-weight: 500;
+    color: var(--text-soft);
+    flex-wrap: wrap;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+  }
+
+  .nav-right {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Buttons — Pill Shape (NO COLOR CHANGE ON HOVER) */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #020408;
+    border: none;
+    box-shadow: 0 12px 30px var(--primary-glow);
+  }
+
+  .btn-primary:hover {
+    /* NO color change - only movement */
+    box-shadow: 0 16px 40px var(--primary-glow);
+    transform: translateY(-3px);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 50%, var(--purple) 100%);
+	font-family: "Playfair Display", serif;
+	font-style: italic;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 5s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero p {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--text-soft);
+    max-width: 580px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .hero-actions .btn {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .hero-card {
+    background: linear-gradient(180deg, rgba(6,10,20,0.95), rgba(2,4,8,0.98));
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    border: 1px solid rgba(255,255,255,0.04);
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  }
+
+  .hero-card .code-title {
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 14px;
+  }
+
+  .hero-card pre {
+    background: rgba(1, 2, 5, 0.95);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #a7f3d0;
+    margin: 0;
+    border: 1px solid rgba(255,255,255,0.03);
+    position: relative;
+  }
+
+  .code-dots {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .code-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .code-dot.red { background: #ef4444; }
+  .code-dot.yellow { background: #f59e0b; }
+  .code-dot.green { background: #10b981; }
+
+  .tag {
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    background: rgba(6, 182, 212, 0.08);
+    color: var(--primary-light);
+    font-weight: 600;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    white-space: nowrap;
+  }
+
+  /* Section */
+  section {
+    padding: 96px 0;
+    position: relative;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 64px;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--primary-light);
+    margin-bottom: 14px;
+    padding: 5px 12px;
+    background: rgba(6, 182, 212, 0.06);
+    border-radius: 100px;
+    border: 1px solid rgba(6, 182, 212, 0.15);
+  }
+
+  .section-header h2 {
+    font-size: clamp(32px, 4.5vw, 48px);
+    letter-spacing: -1px;
+    margin: 0 0 16px;
+    font-weight: 800;
+    line-height: 1.15;
+    word-break: break-word;
+  }
+
+  .section-header p {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: var(--text-soft);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Features */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .feature-card {
+    background: linear-gradient(180deg, rgba(6,10,20,0.8), rgba(2,4,8,0.9));
+    border-radius: var(--radius-sm);
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow), var(--shadow-glow);
+    border-color: rgba(6, 182, 212, 0.15);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #020408;
+    font-weight: 800;
+    font-size: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 25px var(--primary-glow);
+    flex-shrink: 0;
+  }
+
+  .feature-card h3 {
+    margin: 0 0 10px;
+    font-size: 19px;
+    font-weight: 700;
+  }
+
+  .feature-card p {
+    margin: 0;
+    color: var(--text-soft);
+    line-height: 1.65;
+  }
+
+  /* Examples */
+  .examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    min-width: 0;
+  }
+
+  .example-card {
+    background: linear-gradient(180deg, rgba(6,10,20,0.85), rgba(2,4,8,0.95));
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .example-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--purple));
+    opacity: 0;
+    transition: var(--transition);
+  }
+
+  .example-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(255,255,255,0.06);
+  }
+
+  .example-card:hover::before {
+    opacity: 1;
+  }
+
+  .example-card h4 {
+    margin: 0 0 14px;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .example-card h4::before {
+    content: '';
+    font-size: 15px;
+  }
+
+  .example-card pre {
+    background: rgba(1, 2, 5, 0.98);
+    border-radius: var(--radius-sm);
+    padding: 18px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #a7f3d0;
+    margin: 0;
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+
+  /* Docs */
+  .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .doc-card {
+    background: linear-gradient(180deg, rgba(6,10,20,0.8), rgba(2,4,8,0.9));
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .doc-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transform: scaleX(0);
+    transition: var(--transition);
+  }
+
+  .doc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(6, 182, 212, 0.12);
+  }
+
+  .doc-card:hover::after {
+    transform: scaleX(1);
+  }
+
+  .doc-card h4 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .doc-card p {
+    margin: 0 0 16px;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  .doc-link {
+    font-weight: 600;
+    color: var(--primary-light);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+  }
+
+  .doc-link:hover {
+    gap: 10px;
+    color: var(--text);
+  }
+
+  /* Articles */
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    min-width: 0;
+  }
+
+  .article-card {
+    background: linear-gradient(180deg, rgba(6,10,20,0.85), rgba(2,4,8,0.95));
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .article-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    opacity: 0;
+    transition: var(--transition);
+  }
+
+  .article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(255,255,255,0.06);
+  }
+
+  .article-card:hover::before {
+    opacity: 1;
+  }
+
+  .article-card h4 {
+    margin: 0 0 10px;
+    font-size: 17px;
+    line-height: 1.45;
+    font-weight: 700;
+  }
+
+  .article-card .article-desc {
+    color: var(--text-soft);
+    margin: 0 0 18px;
+    line-height: 1.65;
+    font-size: 14px;
+  }
+
+  .article-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .article-source {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .article-source .platform {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .platform-habr { background: rgba(255, 120, 80, 0.08); color: #ff7850; border: 1px solid rgba(255, 120, 80, 0.2); }
+  .platform-dtf { background: rgba(78, 166, 255, 0.08); color: #4ea6ff; border: 1px solid rgba(78, 166, 255, 0.2); }
+  .platform-vc { background: rgba(255, 180, 0, 0.08); color: #ffb400; border: 1px solid rgba(255, 180, 0, 0.2); }
+  .platform-dev { background: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.12); }
+  .platform-medium { background: rgba(175, 175, 175, 0.05); color: #afafaf; border: 1px solid rgba(175, 175, 175, 0.12); }
+  .platform-linkedin { background: rgba(50, 133, 168, 0.05); color: #afafaf; border: 1px solid rgba(50, 133, 168, 0.12); }
+
+  .article-date {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Download */
+  .download-highlight {
+    background: linear-gradient(180deg, rgba(6, 182, 212, 0.05), rgba(59, 130, 246, 0.02));
+    border: 1px solid rgba(6, 182, 212, 0.1);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .download-highlight::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.03) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .download-highlight > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Community */
+  .community-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .community-card {
+    background: linear-gradient(180deg, rgba(6,10,20,0.8), rgba(2,4,8,0.9));
+    border-radius: var(--radius-sm);
+    padding: 32px 24px;
+    border: 1px solid rgba(255,255,255,0.04);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    min-width: 0;
+  }
+
+  .community-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(255,255,255,0.06);
+  }
+
+  .community-card .icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 18px;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .community-card h4 {
+    margin: 0 0 10px;
+    font-size: 19px;
+    font-weight: 700;
+  }
+
+  .community-card p {
+    margin: 0 0 22px;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  /* Footer — СТАРЫЙ СТИЛЬ */
+  footer {
+    padding: 64px 0 48px;
+    background: #010204;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+    min-width: 0;
+  }
+
+  .footer-column h5 {
+    margin: 0 0 14px;
+    font-size: 16px;
+    color: var(--text);
+  }
+
+  .footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--text-soft);
+  }
+
+  .footer-column a:hover {
+    color: var(--text);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    color: var(--text-soft);
+    font-size: 14px;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .hero {
+      padding: 90px 0 70px;
+    }
+
+    .hero-card {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 20px;
+    }
+
+    .nav {
+      flex-wrap: wrap;
+      gap: 16px;
+      min-height: auto;
+      padding: 14px 0;
+    }
+
+    .nav-left {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .nav-right {
+      width: 100%;
+      justify-content: flex-start;
+      gap: 12px;
+    }
+
+    .nav-right .btn {
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+
+    .hero {
+      padding: 64px 0 48px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+      gap: 12px;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .hero-card {
+      padding: 20px;
+    }
+
+    .hero-card pre {
+      font-size: 12px;
+      padding: 14px;
+    }
+
+    section {
+      padding: 64px 0;
+    }
+
+    .section-header {
+      margin-bottom: 48px;
+    }
+
+    .section-header h2 {
+      font-size: 28px;
+    }
+
+    .section-header p {
+      font-size: 15px;
+    }
+
+    .features-grid,
+    .examples-grid,
+    .articles-grid,
+    .docs-grid,
+    .community-grid,
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .feature-card,
+    .example-card,
+    .article-card,
+    .doc-card,
+    .community-card {
+      padding: 22px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .download-highlight {
+      padding: 28px 20px;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- Fractal Canvas -->
+  <canvas id="fractal-canvas"></canvas>
+
+  <!-- Background Effects -->
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="nav-left">
+          <a href="#" class="logo">
+            <img src="images/logo.svg" alt="Zator logo" height="34">
+            Zator
+          </a>
+          <nav class="nav-links">
+            <a href="/#features">Возможности</a>
+            <a href="/#examples">Примеры</a>
+            <a href="/#articles">Статьи</a>
+            <a href="/#community">Сообщество</a>
+          </nav>
+        </div>
+        <div class="nav-right">
+          <a href="#docs" class="btn">Документация</a>
+          <a href="#download" class="btn btn-primary">Скачать</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="articles">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Публикации</span>
+        <h2>Статьи <span class="gradient-text">о нас</span></h2>
+        <p>
+          Публикации, интервью и обзоры о Zator в технических блогах и сообществах.
+        </p>
+      </div>
+      <div class="articles-grid">
+		<article class="article-card">
+			<h4>Zator: Simplify AI Pipelines with KoboldCpp</h4>
+			<p class="article-desc">
+				Tired of writing boilerplate code for AI interactions? Meet Zator - a domain-specific language (DSL) designed to simplify AI content generation workflows with KoboldCpp and Stable Diffusion.
+			</p>
+			<div class="article-meta">
+				<span class="article-source">
+					<span class="platform platform-medium">Medium</span>
+				</span>
+				<span class="article-date">2026</span>
+			</div>
+			<div style="margin-top:14px;">
+				<a href="https://medium.com/@4ds-dev/zator-simplify-ai-pipelines-with-koboldcpp-05eae07cb1e8" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+			</div>
+		</article>
+        <article class="article-card">
+          <h4>Zator: Специализированный язык программирования для AI-контента</h4>
+          <p class="article-desc">
+            Подробный обзор языка для создания и обработки AI-генерируемого контента с использованием API KoboldCpp и Stable Diffusion.
+          </p>
+          <div class="article-meta">
+            <span class="article-source">
+              <span class="platform platform-habr">Habr</span>
+            </span>
+            <span class="article-date">2026</span>
+          </div>
+          <div style="margin-top:14px;">
+            <a href="https://habr.com/ru/articles/1002076/" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <h4>Zator: Язык для генеративных AI-пайплайнов</h4>
+          <p class="article-desc">
+            Обзор возможностей языка: генерация контента, интеграция с KoboldCpp, простой синтаксис для новичков.
+          </p>
+          <div class="article-meta">
+            <span class="article-source">
+              <span class="platform platform-dtf">DTF</span>
+            </span>
+            <span class="article-date">2026</span>
+          </div>
+          <div style="margin-top:14px;">
+            <a href="https://dtf.ru/software/4788318-zator-yazyk-dlya-generativnykh-ai-pajplainov" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <h4>Знакомство с доменно-ориентированным языком Zator</h4>
+          <p class="article-desc">
+            Язык для управления нейросетями, генерация текстов и изображений, идеален для новичков и контент-мейкеров.
+          </p>
+          <div class="article-meta">
+            <span class="article-source">
+              <span class="platform platform-vc">VC.ru</span>
+            </span>
+            <span class="article-date">2026</span>
+          </div>
+          <div style="margin-top:14px;">
+            <a href="https://vc.ru/dev/2746807-priruchaem-neirosseti-s-zator" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <h4>From 30 Lines of Python to 5 Lines of Zator</h4>
+          <p class="article-desc">
+            Как сократить код AI-пайплайнов с 30 строк Python до 5 строк Zator. Простой и интуитивный синтаксис.
+          </p>
+          <div class="article-meta">
+            <span class="article-source">
+              <span class="platform platform-dev">Dev.to</span>
+            </span>
+            <span class="article-date">2026</span>
+          </div>
+          <div style="margin-top:14px;">
+            <a href="https://dev.to/4ds-dev/from-30-lines-of-python-to-5-lines-of-zator-building-ai-pipelines-the-simple-way-81a" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <h4>Что улучшить в языке программирования Zator?</h4>
+          <p class="article-desc">
+            Обсуждение развития проекта: главная цель — упростить разработку сложных цепочек генерации контента.
+          </p>
+          <div class="article-meta">
+            <span class="article-source">
+              <span class="platform platform-dtf">DTF</span>
+            </span>
+            <span class="article-date">2026</span>
+          </div>
+          <div style="margin-top:14px;">
+            <a href="https://dtf.ru/id3336172/4790171-chto-uluchshit-v-yazyke-programmirovaniya-zator-dlya-ai" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <h4>Приручение нейросетей с помощью языка Zator</h4>
+          <p class="article-desc">
+            Простой синтаксис, работа с KoboldCpp и Stable Diffusion, быстрое создание контента.
+          </p>
+          <div class="article-meta">
+            <span class="article-source">
+              <span class="platform platform-vc">VC.ru</span>
+            </span>
+            <span class="article-date">2026</span>
+          </div>
+          <div style="margin-top:14px;">
+            <a href="https://vc.ru/dev/2741526-prirucheniye-neyrosetey-s-pomoshchyu-yazyka-zator" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+          </div>
+        </article>
+		
+		<article class="article-card">
+          <h4>Zator AI Pipeline Builder Simplifies Generative Content Creation</h4>
+          <p class="article-desc">
+            You can build AI pipelines with just a few lines of code using Zator. This language is designed for generating and processing AI content.
+          </p>
+          <div class="article-meta">
+            <span class="article-source">
+              <span class="platform platform-linkedin">Linkedin</span>
+            </span>
+            <span class="article-date">2026</span>
+          </div>
+          <div style="margin-top:14px;">
+            <a href="https://www.linkedin.com/posts/gyaansetu-ai_%3F%3F%3F%3F-%3F%3F-%3F-%3F%3F%3F%3F%3F%3F%3F%3F%3F%3F-%3F%3F-activity-7429212024171073536-hmhG" class="doc-link" target="_blank" rel="noopener">Читать →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <h5>Zator</h5>
+          <ul>
+            <li><a href="/#features">Возможности</a></li>
+            <li><a href="/#examples">Примеры</a></li>
+            <li><a href="/#docs">Документация</a></li>
+            <li><a href="/#download">Скачать</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h5>Ресурсы</h5>
+          <ul>
+            <li><a href="https://github.com/4ds-dev/zator">GitHub</a></li>
+            <li><a href="https://t.me/test4ds">Telegram</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h5>Разработка</h5>
+          <ul>
+            <li><a href="https://t.me/testhleb">Сообщить об ошибке</a></li>
+            <li><a href="https://t.me/testhleb">Внести вклад</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h5>Лицензия</h5>
+          <ul>
+            <li><a href="https://github.com/4ds-dev/zator?tab=MIT-1-ov-file#MIT-1-ov-file">License</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>2026 Zator. Бебебе.</div>
+        <div>Зачем вы это читаете?</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Fractal Particles Script -->
+  <script>
+    (function() {
+      const canvas = document.getElementById('fractal-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      let width, height;
+      let particles = [];
+      let mouseX = 0, mouseY = 0;
+      let targetX = 0, targetY = 0;
+      
+      // Настройки фрактальных частиц
+      const config = {
+        particleCount: 80,
+        connectionDistance: 150,
+        mouseDistance: 250,
+        baseSpeed: 0.3,
+        colors: [
+          'rgba(34, 211, 238, 0.5)',
+          'rgba(59, 130, 246, 0.4)',
+          'rgba(139, 92, 246, 0.3)',
+          'rgba(6, 182, 212, 0.4)'
+        ]
+      };
+      
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * config.baseSpeed;
+          this.vy = (Math.random() - 0.5) * config.baseSpeed;
+          this.size = Math.random() * 2 + 1;
+          this.color = config.colors[Math.floor(Math.random() * config.colors.length)];
+          this.angle = Math.random() * Math.PI * 2;
+          this.spin = (Math.random() - 0.5) * 0.02;
+        }
+        
+        update() {
+          // Движение к курсору с задержкой
+          targetX += (mouseX - targetX) * 0.05;
+          targetY += (mouseY - targetY) * 0.05;
+          
+          // Притяжение к курсору
+          const dx = targetX - this.x;
+          const dy = targetY - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < config.mouseDistance) {
+            const force = (config.mouseDistance - dist) / config.mouseDistance;
+            this.vx += dx * force * 0.0003;
+            this.vy += dy * force * 0.0003;
+          }
+          
+          // Обновление позиции
+          this.x += this.vx;
+          this.y += this.vy;
+          this.angle += this.spin;
+          
+          // Трение
+          this.vx *= 0.99;
+          this.vy *= 0.99;
+          
+          // Границы
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+          
+          // Случайное движение
+          this.vx += (Math.random() - 0.5) * 0.02;
+          this.vy += (Math.random() - 0.5) * 0.02;
+          
+          // Ограничение скорости
+          const maxSpeed = 1.5;
+          this.vx = Math.max(-maxSpeed, Math.min(maxSpeed, this.vx));
+          this.vy = Math.max(-maxSpeed, Math.min(maxSpeed, this.vy));
+        }
+        
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.angle);
+          
+          // Рисуем фрактальную звезду/ромб
+          ctx.beginPath();
+          ctx.fillStyle = this.color;
+          for (let i = 0; i < 4; i++) {
+            const angle = (i * Math.PI / 2) + this.angle;
+            const x = Math.cos(angle) * this.size * 2;
+            const y = Math.sin(angle) * this.size * 2;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.closePath();
+          ctx.fill();
+          
+          // Свечение
+          ctx.shadowColor = this.color;
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size * 0.5, 0, Math.PI * 2);
+          ctx.fill();
+          
+          ctx.restore();
+        }
+      }
+      
+      function init() {
+        resize();
+        particles = [];
+        for (let i = 0; i < config.particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+      
+      function drawConnections() {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            
+            if (dist < config.connectionDistance) {
+              const opacity = (1 - dist / config.connectionDistance) * 0.25;
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(34, 211, 238, ${opacity})`;
+              ctx.lineWidth = 0.5;
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        
+        drawConnections();
+        requestAnimationFrame(animate);
+      }
+      
+      // Обработчики событий
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+      
+      // Touch support
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) {
+          mouseX = e.touches[0].clientX;
+          mouseY = e.touches[0].clientY;
+        }
+      });
+      
+      // Инициализация
+      init();
+      animate();
+    })();
+  </script>
+</body>
+</html>
