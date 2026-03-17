@@ -21,12 +21,12 @@
     --text: #f1f5f9;
     --text-soft: #94a3b8;
     --text-muted: #64748b;
-	
-	--font-family: "Cascadia Mono", sans-serif;
-	--font-optical-sizing: auto;
-	--font-weight: 700;
-    
-	--primary: #06b6d4;
+
+    --font-family: "Cascadia Mono", sans-serif;
+    --font-optical-sizing: auto;
+    --font-weight: 700;
+
+    --primary: #06b6d4;
     --primary-light: #22d3ee;
     --primary-glow: rgba(34, 211, 238, 0.35);
     --accent: #3b82f6;
@@ -65,12 +65,11 @@
     overflow-x: hidden;
     line-height: 1.6;
   }
+
   h1, h2 {
-	
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  /* Canvas для фракталов */
   #fractal-canvas {
     position: fixed;
     top: 0;
@@ -81,7 +80,6 @@
     z-index: 0;
   }
 
-  /* Animated Background */
   .bg-gradient {
     position: fixed;
     top: 0;
@@ -100,7 +98,7 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: 
+    background:
       radial-gradient(ellipse at 20% 20%, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
       radial-gradient(ellipse at 80% 10%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
       radial-gradient(ellipse at 40% 80%, rgba(139, 92, 246, 0.02) 0%, transparent 50%),
@@ -122,7 +120,7 @@
     height: 100%;
     pointer-events: none;
     z-index: -1;
-    background-image: 
+    background-image:
       linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
     background-size: 60px 60px;
@@ -146,7 +144,6 @@
     word-wrap: break-word;
   }
 
-  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -165,7 +162,6 @@
     background: var(--text-muted);
   }
 
-  /* Layout */
   .container {
     max-width: 1280px;
     margin: 0 auto;
@@ -174,7 +170,6 @@
     z-index: 1;
   }
 
-  /* Header */
   header {
     position: sticky;
     top: 0;
@@ -233,7 +228,6 @@
     flex-wrap: wrap;
   }
 
-  /* Buttons — Pill Shape (NO COLOR CHANGE ON HOVER) */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -264,65 +258,14 @@
   }
 
   .btn-primary:hover {
-    /* NO color change - only movement */
     box-shadow: 0 16px 40px var(--primary-glow);
     transform: translateY(-3px);
   }
 
-  /* Hero */
-  .hero {
-    padding: 120px 0 96px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: 64px;
-    align-items: center;
-  }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background: rgba(6, 182, 212, 0.08);
-    border: 1px solid rgba(6, 182, 212, 0.2);
-    border-radius: 100px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--primary-light);
-    margin-bottom: 24px;
-  }
-
-  .hero-badge .dot {
-    width: 8px;
-    height: 8px;
-    background: var(--success);
-    border-radius: 50%;
-    animation: pulse 2s ease infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.2); }
-  }
-
-  .hero h1 {
-    font-size: clamp(40px, 5.5vw, 64px);
-    line-height: 1.08;
-    margin: 0 0 24px;
-    letter-spacing: -1.5px;
-    font-weight: 800;
-    word-break: break-word;
-  }
-
   .gradient-text {
     background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 50%, var(--purple) 100%);
-	font-family: "Playfair Display", serif;
-	font-style: italic;
+    font-family: "Playfair Display", serif;
+    font-style: italic;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -429,7 +372,6 @@
     white-space: nowrap;
   }
 
-  /* Section */
   section {
     padding: 96px 0;
     position: relative;
@@ -472,7 +414,6 @@
     margin: 0 auto;
   }
 
-  /* Features */
   .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -526,7 +467,6 @@
     line-height: 1.65;
   }
 
-  /* Examples */
   .examples-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -594,7 +534,6 @@
     border: 1px solid rgba(255,255,255,0.03);
   }
 
-  /* Docs */
   .docs-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -661,7 +600,6 @@
     color: var(--text);
   }
 
-  /* Articles */
   .articles-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -754,7 +692,6 @@
     color: var(--text-muted);
   }
 
-  /* Download */
   .download-highlight {
     background: linear-gradient(180deg, rgba(6, 182, 212, 0.05), rgba(59, 130, 246, 0.02));
     border: 1px solid rgba(6, 182, 212, 0.1);
@@ -787,7 +724,6 @@
     z-index: 1;
   }
 
-  /* Community */
   .community-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -837,7 +773,6 @@
     line-height: 1.6;
   }
 
-  /* Footer — СТАРЫЙ СТИЛЬ */
   footer {
     padding: 64px 0 48px;
     background: #010204;
@@ -883,7 +818,6 @@
     font-size: 14px;
   }
 
-  /* Responsive */
   @media (max-width: 1024px) {
     .hero-grid {
       grid-template-columns: 1fr;
@@ -1000,474 +934,220 @@
       padding: 28px 20px;
     }
   }
-</style>
+
+  .code-editor {
+    width: 100%;
+    height: 220px;
+    background: #0d1117;
+    color: #e6edf3;
+    white-space: nowrap;
+    overflow-x: auto;
+    word-wrap: break-word;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'Cascadia Mono', 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    outline: none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+  }
+
+  .code-editor::selection {
+    background: #264f78;
+  }
+
+  .code-editor::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .code-editor::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .code-editor::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 6px;
+  }
+
+  .code-editor::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+  }
+  </style>
 </head>
 <body>
-  <!-- Fractal Canvas -->
   <canvas id="fractal-canvas"></canvas>
 
-  <!-- Background Effects -->
   <div class="bg-gradient"></div>
   <div class="bg-grid"></div>
 
-  <!-- Header -->
   <header>
     <div class="container">
       <div class="nav">
         <div class="nav-left">
-          <a href="#" class="logo">
+          <a href="/#" class="logo">
             <img src="images/logo.svg" alt="Zator logo" height="34">
             Zator
           </a>
           <nav class="nav-links">
-            <a href="#features">Возможности</a>
-            <a href="#examples">Примеры</a>
-            <a href="#articles">Статьи</a>
-            <a href="#community">Сообщество</a>
+            <a href="/#features">Возможности</a>
+            <a href="/#examples">Примеры</a>
+            <a href="/#articles">Статьи</a>
+            <a href="/#community">Сообщество</a>
           </nav>
         </div>
         <div class="nav-right">
-          <a href="#docs" class="btn">Документация</a>
-          <a href="#download" class="btn btn-primary">Скачать</a>
+          <a href="/#docs" class="btn">Документация</a>
+          <a href="/#download" class="btn btn-primary">Скачать</a>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <div class="hero-badge">
-            <span class="dot"></span>
-            Доступно сейчас
-          </div>
-          <h1><span class="gradient-text">Zator</span> — язык для генерации и обработки AI-контента</h1>
-          <p>
-            Специализированный язык программирования для построения генеративных пайплайнов текста и изображений
-            через KoboldCpp и Stable Diffusion — просто, быстро и гибко.
-          </p>
-          <div class="hero-actions">
-            <a href="#download" class="btn btn-primary">Скачать Zator</a>
-            <a href="#docs" class="btn">Документация</a>
-            <a href="#examples" class="btn">Примеры</a>
-          </div>
-        </div>
-        <div class="hero-card">
-          <div class="code-title">
-            <span>Пример: генерация персонажа</span>
-            <span class="tag">Zator</span>
-          </div>
-          <pre><code>context = "Вы — дизайнер игровых персонажей."
-
-var prompt = "Игровой персонаж кобольд-маг, чистый зеленый фон"
-var img = generate_img(prompt, context, 512, 512)
-
-var cropped = chroma_key_crop(img, 10, 10, 3.0)
-var icon = scale_to(cropped, 64, 64)
-
-save_img(cropped, "characters/cobold_mag.png")
-save_img(icon, "characters/icons/cobold_mag.png")
-
-print("🎉 Персонаж успешно создан!")</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section id="features">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Возможности</span>
-        <h2>Почему <span class="gradient-text">Zator</span>?</h2>
-        <p>
-          Zator создан для разработчиков, дизайнеров и создателей контента, которым нужен простой,
-          мощный и воспроизводимый способ работать с AI.
-        </p>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3>Простой синтаксис</h3>
-          <p>
-            Минимум шаблонного кода — пишите генеративные сценарии так же легко, как обычные скрипты.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🧠</div>
-          <h3>Интеграция с KoboldCpp</h3>
-          <p>
-            Встроенные функции для генерации текста и изображений через KoboldCpp и Stable Diffusion.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🎨</div>
-          <h3>Обработка изображений</h3>
-          <p>
-            Обрезка по цвету (chroma key), масштабирование и подготовка ассетов прямо в языке.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔁</div>
-          <h3>Управляющие конструкции</h3>
-          <p>
-            Условия, циклы и ввод пользователя позволяют строить интерактивные генераторы контента.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📁</div>
-          <h3>Работа с файлами</h3>
-          <p>
-            Сохраняйте тексты и изображения в структуру проекта без лишних библиотек.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🛠️</div>
-          <h3>Готов для пайплайнов</h3>
-          <p>
-            Идеально подходит для автоматизации генерации ассетов, историй, персонажей и медиа.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Examples -->
-  <section id="examples">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Примеры</span>
-        <h2>Примеры <span class="gradient-text">использования</span></h2>
-        <p>
-          Посмотрите, как легко создавать контент с помощью Zator — от историй до игровых ассетов.
-        </p>
-      </div>
-      <div class="examples-grid">
-        <div class="example-card">
-          <h4>Генерация истории</h4>
-          <pre><code>context = "Вы — писатель фэнтези."
-
-var theme = "путешествие к древнему дракону"
-var prompt = "Напишите короткую историю на тему '{theme}'."
-var story = generate_text(prompt, context, 250)
-
-print(story)
-save_txt(story, "stories/dragon_journey.txt")</code></pre>
-        </div>
-        <div class="example-card">
-          <h4>Интерактивный генератор</h4>
-          <pre><code>context = "Вы — помощник по созданию контента."
-
-print("Введите описание персонажа:")
-input(desc)
-
-var prompt = "Портрет персонажа: {desc}, цифровое искусство"
-var img = generate_img(prompt, context, 512, 512)
-
-save_img(img, "characters/user_character.png")
-print("Готово!")</code></pre>
-        </div>
-        <div class="example-card">
-          <h4>Пакетная обработка</h4>
-          <pre><code>context = ""
-
-var img = generate_img("Иконка меча на зеленом фоне", context, 512, 512)
-var cropped = chroma_key_crop(img, 5, 5, 4.0)
-
-var icon64 = scale_to(cropped, 64, 64)
-var icon128 = scale_to(cropped, 128, 128)
-
-save_img(icon64, "icons/sword_64.png")
-save_img(icon128, "icons/sword_128.png")</code></pre>
-        </div>
-      </div>
-	<div style="text-align:center;margin-top:40px;">
-      <a href="/articles.html" class="btn ">
-        Все статьи →
-      </a>
-    </div>
-    </div>
-  </section>
-
-  <!-- Docs -->
-  <section id="docs">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Документация</span>
-        <h2>Всё для <span class="gradient-text">старта</span></h2>
-        <p>
-          Всё, что нужно для начала работы с Zator — от установки до продвинутых сценариев.
-        </p>
-      </div>
-      <div class="docs-grid">
-        <div class="doc-card">
-          <h4>Начало работы</h4>
-          <p>Установка, требования и первый скрипт на Zator.</p>
-          <a href="https://github.com/4ds-dev/zator/blob/main/README.md#2-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%BD%D1%8B%D0%B5-%D1%82%D1%80%D0%B5%D0%B1%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%B8-%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%B9%D0%BA%D0%B0" class="doc-link">Открыть →</a>
-        </div>
-        <div class="doc-card">
-          <h4>Синтаксис языка</h4>
-          <p>Переменные, условия, циклы, f-строки и типы данных.</p>
-          <a href="https://github.com/4ds-dev/zator/blob/main/README.md#3-%D1%81%D0%B8%D0%BD%D1%82%D0%B0%D0%BA%D1%81%D0%B8%D1%81-%D1%8F%D0%B7%D1%8B%D0%BA%D0%B0" class="doc-link">Открыть →</a>
-        </div>
-        <div class="doc-card">
-          <h4>Генерация контента</h4>
-          <p>Работа с generate_text и generate_img через KoboldCpp.</p>
-          <a href="https://github.com/4ds-dev/zator/blob/main/README.md#4-%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8-%D0%B3%D0%B5%D0%BD%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%B8-%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%BD%D1%82%D0%B0" class="doc-link">Открыть →</a>
-        </div>
-        <div class="doc-card">
-          <h4>Обработка изображений</h4>
-          <p>Chroma key, масштабирование и подготовка ассетов.</p>
-          <a href="https://github.com/4ds-dev/zator/blob/main/README.md#5-%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8-%D0%BE%D0%B1%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B8-%D0%B8%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D0%B9" class="doc-link">Открыть →</a>
-        </div>
-        <div class="doc-card">
-          <h4>Работа с файлами</h4>
-          <p>Сохранение текстов, изображений и организация проекта.</p>
-          <a href="https://github.com/4ds-dev/zator/blob/main/README.md#6-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0%D0%BC%D0%B8" class="doc-link">Открыть →</a>
-        </div>
-        <div class="doc-card">
-          <h4>📋 Ограничения и планы</h4>
-          <p>Текущие ограничения языка и дорожная карта развития.</p>
-          <a href="https://github.com/4ds-dev/zator/blob/main/README.md#9-%D0%BE%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B8-%D1%80%D0%B5%D0%BA%D0%BE%D0%BC%D0%B5%D0%BD%D0%B4%D0%B0%D1%86%D0%B8%D0%B8" class="doc-link">Открыть →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Articles -->
-  <section id="articles">
+  <section id="interpreter">
     <div class="container">
       <div class="section-header">
         <span class="section-label">Публикации</span>
-        <h2>Статьи <span class="gradient-text">о нас</span></h2>
+        <h2>Попробовать <span class="gradient-text">Zator</span></h2>
         <p>
-          Публикации, интервью и обзоры о Zator в технических блогах и сообществах.
+          Запуск кода в Zator (без save_img, save_txt, с неполной реализацией generate_img, generate_text)
         </p>
       </div>
-      <div class="articles-grid">
-		<article class="article-card">
-			<h4>Zator: Simplify AI Pipelines with KoboldCpp</h4>
-			<p class="article-desc">
-				Tired of writing boilerplate code for AI interactions? Meet Zator - a domain-specific language (DSL) designed to simplify AI content generation workflows with KoboldCpp and Stable Diffusion.
-			</p>
-			<div class="article-meta">
-				<span class="article-source">
-					<span class="platform platform-medium">Medium</span>
-				</span>
-				<span class="article-date">2026</span>
-			</div>
-			<div style="margin-top:14px;">
-				<a href="[ССЫЛКА_НА_СТАТЬЮ]" class="doc-link" target="_blank" rel="noopener">Читать →</a>
-			</div>
-		</article>
-        <article class="article-card">
-          <h4>Zator: Специализированный язык программирования для AI-контента</h4>
-          <p class="article-desc">
-            Подробный обзор языка для создания и обработки AI-генерируемого контента с использованием API KoboldCpp и Stable Diffusion.
-          </p>
-          <div class="article-meta">
-            <span class="article-source">
-              <span class="platform platform-habr">Habr</span>
-            </span>
-            <span class="article-date">2026</span>
-          </div>
-          <div style="margin-top:14px;">
-            <a href="https://habr.com/ru/articles/1002076/" class="doc-link" target="_blank" rel="noopener">Читать →</a>
-          </div>
-        </article>
-
-        <article class="article-card">
-          <h4>Zator: Язык для генеративных AI-пайплайнов</h4>
-          <p class="article-desc">
-            Обзор возможностей языка: генерация контента, интеграция с KoboldCpp, простой синтаксис для новичков.
-          </p>
-          <div class="article-meta">
-            <span class="article-source">
-              <span class="platform platform-dtf">DTF</span>
-            </span>
-            <span class="article-date">2026</span>
-          </div>
-          <div style="margin-top:14px;">
-            <a href="https://dtf.ru/software/4788318-zator-yazyk-dlya-generativnykh-ai-pajplainov" class="doc-link" target="_blank" rel="noopener">Читать →</a>
-          </div>
-        </article>
-
-        <article class="article-card">
-          <h4>Знакомство с доменно-ориентированным языком Zator</h4>
-          <p class="article-desc">
-            Язык для управления нейросетями, генерация текстов и изображений, идеален для новичков и контент-мейкеров.
-          </p>
-          <div class="article-meta">
-            <span class="article-source">
-              <span class="platform platform-vc">VC.ru</span>
-            </span>
-            <span class="article-date">2026</span>
-          </div>
-          <div style="margin-top:14px;">
-            <a href="https://vc.ru/dev/2746807-priruchaem-neirosseti-s-zator" class="doc-link" target="_blank" rel="noopener">Читать →</a>
-          </div>
-        </article>
-
-        <article class="article-card">
-          <h4>From 30 Lines of Python to 5 Lines of Zator</h4>
-          <p class="article-desc">
-            Как сократить код AI-пайплайнов с 30 строк Python до 5 строк Zator. Простой и интуитивный синтаксис.
-          </p>
-          <div class="article-meta">
-            <span class="article-source">
-              <span class="platform platform-dev">Dev.to</span>
-            </span>
-            <span class="article-date">2026</span>
-          </div>
-          <div style="margin-top:14px;">
-            <a href="https://dev.to/4ds-dev/from-30-lines-of-python-to-5-lines-of-zator-building-ai-pipelines-the-simple-way-81a" class="doc-link" target="_blank" rel="noopener">Читать →</a>
-          </div>
-        </article>
-
-		<article class="article-card">
-          <h4>Zator AI Pipeline Builder Simplifies Generative Content Creation</h4>
-          <p class="article-desc">
-            You can build AI pipelines with just a few lines of code using Zator. This language is designed for generating and processing AI content.
-          </p>
-          <div class="article-meta">
-            <span class="article-source">
-              <span class="platform platform-linkedin">Linkedin</span>
-            </span>
-            <span class="article-date">2026</span>
-          </div>
-          <div style="margin-top:14px;">
-            <a href="https://www.linkedin.com/posts/gyaansetu-ai_%3F%3F%3F%3F-%3F%3F-%3F-%3F%3F%3F%3F%3F%3F%3F%3F%3F%3F-%3F%3F-activity-7429212024171073536-hmhG" class="doc-link" target="_blank" rel="noopener">Читать →</a>
-          </div>
-        </article>
-    </div>
-	<div style="text-align:center;margin-top:40px;">
-      <a href="/articles.html" class="btn ">
-        Все статьи →
-      </a>
-    </div>
-  </section>
-  
-  <!-- Download -->
-  <section id="download">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Загрузка</span>
-        <h2>Скачать <span class="gradient-text">Zator</span></h2>
-        <p>
-          Начните использовать Zator уже сегодня — бесплатно и без ограничений.
-        </p>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🪟</div>
-          <h3>Windows</h3>
-          <p>Поддержка Windows 10/11. Один исполняемый файл.</p>
-          <a href="https://github.com/4ds-dev/zator/releases/latest/download/zator.exe" class="btn btn-primary" style="margin-top:16px;width:100%;">Скачать для Windows</a>
+      <div class="hero-card" style="margin-top:20px;">
+        <div class="code-dots">
+          <div class="code-dot red"></div>
+          <div class="code-dot yellow"></div>
+          <div class="code-dot green"></div>
+          <button onclick="runZator()" class="btn" style="margin-left: auto">Run</button>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">📦</div>
-          <h3>Исходный код</h3>
-          <p>Открытый исходный код для сборки и кастомизации.</p>
-          <a href="https://github.com/4ds-dev/zator" class="btn" style="margin-top:16px;width:100%;">Перейти на GitHub</a>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📄</div>
-          <h3>Примеры</h3>
-          <p>Готовые примеры скриптов для быстрого старта.</p>
-          <a href="#examples" class="btn" style="margin-top:16px;width:100%;">Смотреть примеры</a>
-        </div>
+        <textarea id="zator-code" class="code-editor">
+context = "Ты помощник"
+
+var name = "Мир"
+var text = generate_text("Привет, {name}", context, 100)
+
+print(text)
+        </textarea>
+        <pre><code id="zator-output"></code></pre>
       </div>
     </div>
   </section>
 
-  <!-- Community -->
-  <section id="community">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Сообщество</span>
-        <h2>Присоединяйтесь <span class="gradient-text">к нам</span></h2>
-        <p>
-          Присоединяйтесь к сообществу Zator — делитесь скриптами, идеями и улучшениями.
-        </p>
-      </div>
-      <div class="community-grid">
-        <div class="community-card">
-          <div class="icon">GH</div>
-          <h4>GitHub</h4>
-          <p>Исходный код, баг-репорты и предложения по развитию.</p>
-          <a href="https://github.com/4ds-dev/zator" class="btn">Перейти</a>
-        </div>
-        <div class="community-card">
-          <div class="icon">TG️</div>
-          <h4>Telegram</h4>
-          <p>Общение, помощь, примеры и обсуждение новых функций.</p>
-          <a href="https://t.me/test4ds" class="btn">Присоединиться</a>
-        </div>
-        <div class="community-card">
-          <div class="icon">DOC</div>
-          <h4>Документация</h4>
-          <p>Полное руководство по языку и API.</p>
-          <a href="#docs" class="btn">Открыть</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <script>
+    function runZator() {
+      const code = document.getElementById("zator-code").value;
+      const z = new ZatorInterpreter();
+      const result = z.run(code);
+      document.getElementById("zator-output").textContent = result;
+    }
+  </script>
 
-  <!-- Footer — СТАРЫЙ -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-column">
-          <h5>Zator</h5>
-          <ul>
-            <li><a href="#features">Возможности</a></li>
-            <li><a href="#examples">Примеры</a></li>
-            <li><a href="#docs">Документация</a></li>
-            <li><a href="#download">Скачать</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h5>Ресурсы</h5>
-          <ul>
-            <li><a href="https://github.com/4ds-dev/zator">GitHub</a></li>
-            <li><a href="https://t.me/test4ds">Telegram</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h5>Разработка</h5>
-          <ul>
-            <li><a href="https://t.me/testhleb">Сообщить об ошибке</a></li>
-            <li><a href="https://t.me/testhleb">Внести вклад</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h5>Лицензия</h5>
-          <ul>
-            <li><a href="https://github.com/4ds-dev/zator?tab=MIT-1-ov-file#MIT-1-ov-file">License</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div>2026 Zator. Бебебе.</div>
-        <div>Зачем вы это читаете?</div>
-      </div>
-    </div>
-  </footer>
+  <script>
+    class ZatorInterpreter {
+      constructor() {
+        this.vars = {};
+        this.context = "";
+      }
 
-  <!-- Fractal Particles Script -->
+      run(code) {
+        const lines = code.split("\n").map(l => l.trim()).filter(Boolean);
+        let output = [];
+
+        for (let line of lines) {
+          if (line.startsWith("context")) {
+            this.context = this.evalString(line.split("=")[1]);
+          }
+          else if (line.startsWith("var ")) {
+            const [, name, expr] = line.match(/var\s+(\w+)\s*=\s*(.+)/);
+            this.vars[name] = this.evalExpr(expr);
+          }
+          else if (line.startsWith("print")) {
+            const content = line.match(/print\((.*)\)/)[1];
+            output.push(this.render(this.evalExpr(content)));
+          }
+          else if (line.includes("generate_text")) {
+            const [, name, prompt] = line.match(/var\s+(\w+)\s*=\s*generate_text\((.*?),/);
+            this.vars[name] = this.render(this.evalExpr(prompt));
+          }
+          else if (line.includes("generate_img")) {
+            const [, name] = line.match(/var\s+(\w+)\s*=/);
+            this.vars[name] = this.createWhiteImage(256, 256);
+          }
+          else if (line.startsWith("save_")) {
+            console.warn("Save disabled:", line);
+          }
+        }
+
+        return output.join("\n");
+      }
+
+      evalExpr(expr) {
+        expr = expr.trim();
+
+        if (expr.startsWith("generate_text")) {
+          const match = expr.match(/generate_text\((.*?),(.*?),(.*?)\)/);
+          if (!match) return "";
+
+          let prompt = this.evalExpr(match[1]);
+          prompt = this.render(prompt);
+
+          return prompt;
+        }
+
+        if (expr.startsWith("generate_img")) {
+          const match = expr.match(/generate_img\((.*?),(.*?),(.*?),(.*?)\)/);
+          if (!match) return "";
+
+          const width = parseInt(this.evalExpr(match[3])) || 256;
+          const height = parseInt(this.evalExpr(match[4])) || 256;
+
+          return this.createWhiteImage(width, height);
+        }
+
+        if (expr.startsWith('"')) {
+          return this.evalString(expr);
+        }
+
+        if (!isNaN(expr)) return Number(expr);
+
+        if (this.vars[expr] !== undefined) return this.vars[expr];
+
+        return expr;
+      }
+
+      evalString(str) {
+        return str.replace(/^"|"$/g, "");
+      }
+
+      render(str) {
+        return str.replace(/\{(\w+)\}/g, (_, v) => this.vars[v] ?? "");
+      }
+
+      createWhiteImage(w, h) {
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, w, h);
+
+        return canvas.toDataURL();
+      }
+    }
+  </script>
+
   <script>
     (function() {
       const canvas = document.getElementById('fractal-canvas');
       const ctx = canvas.getContext('2d');
-      
+
       let width, height;
       let particles = [];
       let mouseX = 0, mouseY = 0;
       let targetX = 0, targetY = 0;
-      
-      // Настройки фрактальных частиц
+
       const config = {
         particleCount: 80,
         connectionDistance: 150,
@@ -1480,17 +1160,17 @@ save_img(icon128, "icons/sword_128.png")</code></pre>
           'rgba(6, 182, 212, 0.4)'
         ]
       };
-      
+
       function resize() {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
       }
-      
+
       class Particle {
         constructor() {
           this.reset();
         }
-        
+
         reset() {
           this.x = Math.random() * width;
           this.y = Math.random() * height;
@@ -1501,52 +1181,44 @@ save_img(icon128, "icons/sword_128.png")</code></pre>
           this.angle = Math.random() * Math.PI * 2;
           this.spin = (Math.random() - 0.5) * 0.02;
         }
-        
+
         update() {
-          // Движение к курсору с задержкой
           targetX += (mouseX - targetX) * 0.05;
           targetY += (mouseY - targetY) * 0.05;
-          
-          // Притяжение к курсору
+
           const dx = targetX - this.x;
           const dy = targetY - this.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          
+
           if (dist < config.mouseDistance) {
             const force = (config.mouseDistance - dist) / config.mouseDistance;
             this.vx += dx * force * 0.0003;
             this.vy += dy * force * 0.0003;
           }
-          
-          // Обновление позиции
+
           this.x += this.vx;
           this.y += this.vy;
           this.angle += this.spin;
-          
-          // Трение
+
           this.vx *= 0.99;
           this.vy *= 0.99;
-          
-          // Границы
+
           if (this.x < 0 || this.x > width) this.vx *= -1;
           if (this.y < 0 || this.y > height) this.vy *= -1;
-          
-          // Случайное движение
+
           this.vx += (Math.random() - 0.5) * 0.02;
           this.vy += (Math.random() - 0.5) * 0.02;
-          
-          // Ограничение скорости
+
           const maxSpeed = 1.5;
           this.vx = Math.max(-maxSpeed, Math.min(maxSpeed, this.vx));
           this.vy = Math.max(-maxSpeed, Math.min(maxSpeed, this.vy));
         }
-        
+
         draw() {
           ctx.save();
           ctx.translate(this.x, this.y);
           ctx.rotate(this.angle);
-          
-          // Рисуем фрактальную звезду/ромб
+
           ctx.beginPath();
           ctx.fillStyle = this.color;
           for (let i = 0; i < 4; i++) {
@@ -1558,18 +1230,17 @@ save_img(icon128, "icons/sword_128.png")</code></pre>
           }
           ctx.closePath();
           ctx.fill();
-          
-          // Свечение
+
           ctx.shadowColor = this.color;
           ctx.shadowBlur = 10;
           ctx.beginPath();
           ctx.arc(0, 0, this.size * 0.5, 0, Math.PI * 2);
           ctx.fill();
-          
+
           ctx.restore();
         }
       }
-      
+
       function init() {
         resize();
         particles = [];
@@ -1577,14 +1248,14 @@ save_img(icon128, "icons/sword_128.png")</code></pre>
           particles.push(new Particle());
         }
       }
-      
+
       function drawConnections() {
         for (let i = 0; i < particles.length; i++) {
           for (let j = i + 1; j < particles.length; j++) {
             const dx = particles[i].x - particles[j].x;
             const dy = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (dist < config.connectionDistance) {
               const opacity = (1 - dist / config.connectionDistance) * 0.25;
               ctx.beginPath();
@@ -1597,41 +1268,35 @@ save_img(icon128, "icons/sword_128.png")</code></pre>
           }
         }
       }
-      
+
       function animate() {
         ctx.clearRect(0, 0, width, height);
-        
+
         particles.forEach(p => {
           p.update();
           p.draw();
         });
-        
+
         drawConnections();
         requestAnimationFrame(animate);
       }
-      
-      // Обработчики событий
+
       window.addEventListener('resize', resize);
       window.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
       });
-      
-      // Touch support
+
       window.addEventListener('touchmove', (e) => {
         if (e.touches.length > 0) {
           mouseX = e.touches[0].clientX;
           mouseY = e.touches[0].clientY;
         }
       });
-      
-      // Инициализация
+
       init();
       animate();
     })();
   </script>
 </body>
-
 </html>
-
-
