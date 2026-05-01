@@ -103,12 +103,30 @@
                     <button onclick="runZator()" class="btn-outline ndot" style="margin: 0; padding: 6px 16px;">Run Script</button>
                 </div>
 
-                <textarea id="zator-code" class="code-editor" spellcheck="false">// Пример синтаксиса Zator
-var prompt = "Кобольд-маг, зеленый фон"
-var img = generate_img(prompt, 512, 512)
-var cropped = chroma_key_crop(img, 10, 10, 3.0)
-save_img(cropped, "character.png")
-print("Done.")</textarea>
+                <textarea id="zator-code" class="code-editor" spellcheck="false">def generate_and_publish_story(prompt, domain)
+{
+
+    var text = generate_text("Generate story about {prompt}", 10)
+    var icon = generate_img("{prompt}", 256, 256)
+
+    var publish = request("{domain}", "GET")
+    print("{publish}? Ага!")
+
+    save_txt(text, "stories/{prompt}.txt")
+    save_img(icon, "stories/{prompt}.png")
+}
+
+var domain
+print("Enter domain:")
+input(domain)
+
+var theme
+print("Enter theme:")
+input(theme)
+
+call generate_and_publish_story(theme, domain, test)
+
+print("Story generated and published successfully!")</textarea>
                 
                 <div class="output-panel">
                     <span class="output-label ndot">Console Output</span>

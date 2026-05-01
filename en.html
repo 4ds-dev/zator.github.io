@@ -51,15 +51,30 @@
                     <span class="ndot" style="font-size: 0.8rem;">Character Generation</span>
                     <span class="tag">Zator</span>
                 </div>
-                <pre><code>context = "You are a game character designer."
+                <pre><code>def generate_and_publish_story(prompt, domain)
+{
 
-var prompt = "Game character kobold-mage, clean green background"
-var img = generate_img(prompt, context, 512, 512)
+    var text = generate_text("Generate story about {prompt}", 10)
+    var icon = generate_img("{prompt}", 256, 256)
 
-var cropped = chroma_key_crop(img, 10, 10, 3.0)
-save_img(cropped, "characters/kobold_mage.png")
+    var publish = request("{domain}", "GET")
+    print("{publish}? Ага!")
 
-print("Character successfully created!")</code></pre>
+    save_txt(text, "stories/{prompt}.txt")
+    save_img(icon, "stories/{prompt}.png")
+}
+
+var domain
+print("Enter domain:")
+input(domain)
+
+var theme
+print("Enter theme:")
+input(theme)
+
+call generate_and_publish_story(theme, domain, test)
+
+print("Story generated and published successfully!")</code></pre>
                 <p>Minimum boilerplate code — maximum results.</p>
 			<a href="/interpreter" class="btn btn-outline ndot" style="font-size: 0.7rem;">Run →</a>
             </div>
