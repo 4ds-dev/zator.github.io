@@ -11,19 +11,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+	
 	<script>
-	    (function() {
-	        if (!sessionStorage.getItem('lang_redirected')) {
-	            const userLang = navigator.language || navigator.userLanguage; 
-	            
-	            if (!userLang.toLowerCase().startsWith('ru')) {
-	                sessionStorage.setItem('lang_redirected', 'true');
-	                window.location.href = 'en'; 
-	            }
-	        }
-	    })();
-	</script>
+    (function() {
+        if (!sessionStorage.getItem('lang_redirected')) {
+            const userLang = navigator.language || navigator.userLanguage; 
+            
+            if (!userLang.toLowerCase().startsWith('ru')) {
+                sessionStorage.setItem('lang_redirected', 'true');
+                window.location.href = 'en.html'; 
+            }
+        }
+    })();
+</script>
 </head>
 <body>
 
@@ -47,41 +47,16 @@
         <!-- Hero Section -->
         <section class="hero">
             <p class="hero-badge ndot">Available Now</p>
-            
-            <div class="hero-content-wrapper">
-                <div>
-                    <h1>ZATOR<br>MAKES<br>ALL BETTER<span style="color: var(--accent-red);">.</span></h1>
-                    <p style="max-width: 500px; color: var(--text-soft); margin-top: 20px;">
-                        Zator — специализированный язык программирования для генерации и обработки AI-контента через KoboldCpp и Stable Diffusion.
-                    </p>
-                </div>
-
-                <!-- Блок часов -->
-                <div class="nothing-clock">
-                    <svg class="progress-ring" width="220" height="220">
-                        <circle
-                            class="progress-ring__circle"
-                            stroke-width="1.5"
-                            fill="transparent"
-                            r="100"
-                            cx="110"
-                            cy="110"
-                        />
-                    </svg>
-                    <div class="clock-display">
-                        <div class="clock-hm" id="hm">00:00</div>
-                        <span class="clock-sec" id="sec">00</span>
-                        <div class="clock-date" id="date">JAN 01 FRI</div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 30px;">
+            <h1>ZATOR<br>MAKES<br>ALL BETTER<span style="color: var(--accent-red);">.</span></h1>
+            <p style="max-width: 500px; color: var(--text-soft);">
+                Zator — специализированный язык программирования для генерации и обработки AI-контента через KoboldCpp и Stable Diffusion.
+            </p>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                 <a href="https://github.com/4ds-dev/zator/releases/latest/download/zator.exe" class="btn btn-black ndot">Download .EXE</a>
                 <a href="https://github.com/4ds-dev/zator/blob/main/README.md" class="btn btn-outline ndot">Documentation</a>
             </div>
         </section>
-	</div>
+	
         <!-- Main Example Widget -->
         <section id="examples">
             <div class="card" style="width: 100%;">
@@ -210,51 +185,6 @@ print("Done.")</code></pre>
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.card, section h2').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease-out';
-            observer.observe(el);
-        });
-    </script>
-	<script>
-        // Логика часов
-        const circle = document.querySelector('.progress-ring__circle');
-        const radius = circle.r.baseVal.value;
-        const circumference = 2 * Math.PI * radius;
-
-        circle.style.strokeDasharray = `${circumference} ${circumference}`;
-
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const mins = String(now.getMinutes()).padStart(2, '0');
-            const secs = String(now.getSeconds()).padStart(2, '0');
-            
-            document.getElementById('hm').textContent = `${hours}:${mins}`;
-            document.getElementById('sec').textContent = secs;
-
-            const options = { day: '2-digit', month: 'short', weekday: 'short' };
-            const dateStr = now.toLocaleDateString('en-US', options).replace(',', '').toUpperCase();
-            document.getElementById('date').textContent = dateStr;
-
-            const offset = circumference - (now.getSeconds() / 60) * circumference;
-            circle.style.strokeDashoffset = offset;
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Эффект появления при скролле
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.card, section h2, .nothing-clock').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'all 0.6s ease-out';

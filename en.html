@@ -1,39 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="images/icon-black.svg" rel="icon">
-    <title>Zator — A Language for AI Content Generation</title>
-    <meta name="description" content="Zator is a specialized programming language for generating and processing AI content using KoboldCpp." />
-    
-    <!-- Fonts from Source 2 style -->
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="images/icon-black.svg" rel="icon">
+	<title>Zator — A Language for AI Content Generation</title>
+	
+	<link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Link to the CSS from Source 2 -->
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Minimal additions for layout consistency with Source 1 content */
-        .platform-tag {
-            display: inline-block;
-            padding: 2px 8px;
-            border: 1px solid var(--text-soft);
-            border-radius: 4px;
-            font-size: 0.7rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-        .emoji { font-size: 1.5rem; display: block; margin-bottom: 15px; }
-        .hero h1 { line-height: 1; margin: 20px 0; }
-        .grid-layout { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 20px; 
-        }
-    </style>
 </head>
 <body>
 
@@ -53,60 +30,59 @@
     </header>
 
     <main>
+	<div>
         <!-- Hero Section -->
         <section class="hero">
             <p class="hero-badge ndot">Available Now</p>
-            <h1>ZATOR<br>MAKES<br>AI BETTER<span style="color: var(--accent-red);">.</span></h1>
+            <h1>ZATOR<br>MAKES<br>ALL BETTER<span style="color: var(--accent-red);">.</span></h1>
             <p style="max-width: 500px; color: var(--text-soft);">
-                A specialized programming language for building generative text and image pipelines via KoboldCpp and Stable Diffusion — simple, fast, and flexible.
+                Zator — A specialized programming language for building generative text and image pipelines via KoboldCpp and Stable Diffusion — simple, fast, and flexible.
             </p>
             <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <a href="https://github.com/4ds-dev/zator/releases/latest/download/zator.exe" class="btn btn-black ndot">Download .EXE</a>
-                <a href="#docs" class="btn btn-outline ndot">Documentation</a>
+                <a href="https://github.com/4ds-dev/zator/releases/latest/download/zator.exe" class="btn btn-black ndot">Download Zator</a>
+                <a href="https://github.com/4ds-dev/zator/blob/main/README.md" class="btn btn-outline ndot">Documentation</a>
             </div>
         </section>
-
+	
         <!-- Main Example Widget -->
         <section id="examples">
             <div class="card" style="width: 100%;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="ndot" style="font-size: 0.8rem;">Character Generation Example</span>
-                    <span class="tag">zator_v0.0.2</span>
+                    <span class="ndot" style="font-size: 0.8rem;">Character Generation</span>
+                    <span class="tag">Zator</span>
                 </div>
-                <pre><code>context = "You are a character designer."
-var prompt = "Kobold-mage, green background"
+                <pre><code>context = "You are a game character designer."
+
+var prompt = "Game character kobold-mage, clean green background"
 var img = generate_img(prompt, context, 512, 512)
+
 var cropped = chroma_key_crop(img, 10, 10, 3.0)
-save_img(cropped, "character.png")
-print("?? Done!")</code></pre>
-                <p>Minimum boilerplate — maximum result.</p>
-                <a href="/interpreter" class="btn btn-outline ndot" style="font-size: 0.7rem;">Run in Interpreter →</a>
+save_img(cropped, "characters/kobold_mage.png")
+
+print("Character successfully created!")</code></pre>
+                <p>Minimum boilerplate code — maximum results.</p>
+			<a href="/interpreter" class="btn btn-outline ndot" style="font-size: 0.7rem;">Run →</a>
             </div>
         </section>
 
         <!-- Features Grid -->
         <section id="features">
-            <h2 class="ndot" style="margin-bottom: 40px; font-size: 1rem;">Capabilities</h2>
+            <h2 class="ndot" style="margin-bottom: 40px; font-size: 1rem;">Why Zator?</h2>
             <div class="grid-layout">
                 <div class="card">
                     <span class="emoji">⚡</span>
                     <h3 class="ndot">Simple Syntax</h3>
-                    <p>Write generative scenarios as easily as regular scripts without complex boilerplate code.</p>
+                    <p>Write generative scenarios as easily as regular scripts.</p>
                 </div>
                 <div class="card">
                     <span class="emoji">🧠</span>
-                    <h3 class="ndot">KoboldCpp</h3>
-                    <p>Native integration for text and image generation via KoboldCpp and Stable Diffusion APIs.</p>
+                    <h3 class="ndot">KoboldCpp Integration</h3>
+                    <p>Built-in functions for text and image generation via KoboldCpp and Stable Diffusion.</p>
                 </div>
                 <div class="card">
                     <span class="emoji">🎨</span>
                     <h3 class="ndot">Image Processing</h3>
                     <p>Color-based cropping (chroma key), scaling, and asset preparation directly within the language.</p>
-                </div>
-                <div class="card">
-                    <span class="emoji">📂</span>
-                    <h3 class="ndot">File Handling</h3>
-                    <p>Save texts and images into your project structure without needing external libraries.</p>
                 </div>
             </div>
         </section>
@@ -121,57 +97,40 @@ print("?? Done!")</code></pre>
                     <a href="https://github.com/4ds-dev/zator/blob/main/README.md#2" class="btn btn-outline ndot" style="font-size: 0.7rem;">Open →</a>
                 </div>
                 <div class="card">
-                    <h3 class="ndot">AI Functions</h3>
+                    <h3 class="ndot">Content Generation</h3>
                     <p>Working with generate_text and generate_img via KoboldCpp.</p>
                     <a href="https://github.com/4ds-dev/zator/blob/main/README.md#4" class="btn btn-outline ndot" style="font-size: 0.7rem;">Open →</a>
                 </div>
                 <div class="card">
-                    <h3 class="ndot">Language Syntax</h3>
-                    <p>Variables, conditions, loops, f-strings, and data types.</p>
-                    <a href="https://github.com/4ds-dev/zator/blob/main/README.md#3" class="btn btn-outline ndot" style="font-size: 0.7rem;">Open →</a>
+                    <h3 class="ndot">File Handling</h3>
+                    <p>Saving texts, images, and project organization.</p>
+                    <a href="https://github.com/4ds-dev/zator/blob/main/README.md#6" class="btn btn-outline ndot" style="font-size: 0.7rem;">Open →</a>
                 </div>
             </div>
         </section>
 
         <!-- Articles -->
         <section id="articles">
-            <h2 class="ndot" style="margin-bottom: 40px; font-size: 1rem;">Press & Articles</h2>
+            <h2 class="ndot" style="margin-bottom: 40px; font-size: 1rem;">Publications</h2>
             <div class="grid-layout">
+                <div class="card">
+                    <span class="platform-tag">Habr</span>
+                    <h3 class="ndot">A Language for AI Content</h3>
+                    <p>A detailed review of the language for creating AI-generated content.</p>
+                    <a href="https://habr.com/ru/articles/1002076/" class="btn btn-outline ndot" style="font-size: 0.7rem;">Read</a>
+                </div>
                 <div class="card">
                     <span class="platform-tag">Medium</span>
                     <h3 class="ndot">Simplify AI Pipelines</h3>
-                    <p>Meet Zator - a DSL designed to simplify AI content generation workflows.</p>
+                    <p>Building AI content generation workflows with KoboldCpp.</p>
                     <a href="#" class="btn btn-outline ndot" style="font-size: 0.7rem;">Read</a>
-                </div>
-                <div class="card">
-                    <span class="platform-tag">Habr</span>
-                    <h3 class="ndot">Language for AI Content</h3>
-                    <p>Detailed review of the language for creating and processing AI content.</p>
-                    <a href="https://habr.com/ru/articles/1002076/" class="btn btn-outline ndot" style="font-size: 0.7rem;">Read</a>
                 </div>
                 <article class="card" style="background: var(--text); color: var(--bg);">
                     <span class="platform-tag" style="border-color: rgba(0,0,0,0.2);">Dev.to</span>
                     <h3 class="ndot" style="color: var(--bg);">From 30 Lines to 5</h3>
-                    <p style="color: var(--bg); opacity: 0.8;">How to reduce boilerplate in your AI projects by switching to Zator.</p>
+                    <p style="color: var(--bg); opacity: 0.8;">How to reduce AI pipeline code by switching to Zator.</p>
                     <a href="https://dev.to/4ds-dev/from-30-lines-of-python-to-5-lines-of-zator-building-ai-pipelines-the-simple-way-81a" class="btn-outline ndot" style="background: var(--bg); color: var(--text); border-color: var(--bg);">Read More</a>
                 </article>
-            </div>
-        </section>
-
-        <!-- Community -->
-        <section id="community">
-            <h2 class="ndot" style="margin-bottom: 40px; font-size: 1rem;">Community</h2>
-            <div class="grid-layout">
-                <div class="card">
-                    <h3 class="ndot">GitHub</h3>
-                    <p>Source code, bug reports, and development suggestions.</p>
-                    <a href="https://github.com/4ds-dev/zator" class="btn btn-outline ndot" style="font-size: 0.7rem;">Contribute</a>
-                </div>
-                <div class="card">
-                    <h3 class="ndot">Telegram</h3>
-                    <p>Communication, help, and discussion of new features.</p>
-                    <a href="https://t.me/test4ds" class="btn btn-outline ndot" style="font-size: 0.7rem;">Join Chat</a>
-                </div>
             </div>
         </section>
     </main>
@@ -181,20 +140,20 @@ print("?? Done!")</code></pre>
         <div>
             <h5 class="ndot">Zator</h5>
             <ul>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#examples">Examples</a></li>
+                <li><a href="/#features">Features</a></li>
+                <li><a href="/#examples">Examples</a></li>
                 <li><a href="https://github.com/4ds-dev/zator">GitHub</a></li>
             </ul>
         </div>
         <div>
-            <h5 class="ndot">Resources</h5>
+            <h5 class="ndot">Community</h5>
             <ul>
                 <li><a href="https://t.me/test4ds">Telegram</a></li>
-                <li><a href="https://t.me/testhleb">Support</a></li>
+                <li><a href="https://t.me/testhleb">Contribute</a></li>
             </ul>
         </div>
         <div>
-            <h5 class="ndot">Legal</h5>
+            <h5 class="ndot">Resources</h5>
             <ul>
                 <li><a href="https://github.com/4ds-dev/zator?tab=MIT-1-ov-file">License (MIT)</a></li>
             </ul>
@@ -202,11 +161,10 @@ print("?? Done!")</code></pre>
     </footer>
 
     <div class="footer-bottom ndot">
-        2026 Zator. Be-be-be.
+        2026 Zator. Why are you reading this?
     </div>
 
     <script>
-        // Smooth reveal animation
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
