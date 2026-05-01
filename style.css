@@ -1,0 +1,287 @@
+:root {
+    --bg: #000000;
+    --text: #ffffff;
+    --accent-red: #ff0000;
+    --card-bg: #111111;
+    --border: #222222;
+    --text-soft: #999999;
+    --code-bg: #0a0a0a;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg: #f5f5f5;
+        --text: #000000;
+        --card-bg: #ffffff;
+        --border: #e0e0e0;
+        --text-soft: #666666;
+        --code-bg: #eeeeee;
+    }
+}
+
+/* Базовые настройки */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: crosshair;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+.ndot {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Точечная сетка Nothing */
+.grid-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: radial-gradient(var(--border) 1px, transparent 1px);
+    background-size: 32px 32px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+/* Навигация */
+header {
+    padding: 30px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: rgba(var(--bg), 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+.logo-box {
+    border: 1.5px solid var(--text);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-soft);
+    margin-left: 20px;
+    font-size: 0.8rem;
+    transition: color 0.2s;
+}
+
+nav a:hover { color: var(--text); }
+
+/* Контент */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5vw;
+}
+
+section { padding: 80px 0; }
+
+/* Hero секция */
+.hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-badge {
+    color: var(--accent-red);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.hero h1, .section-title {
+    font-size: clamp(3rem, 10vw, 7rem);
+    line-height: 0.9;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.emoji {
+    font-family: "Noto Emoji", sans-serif;
+    font-weight: 700;
+    font-size: 2rem; 
+    margin-bottom: 10px;
+}
+
+/* Сетка и карточки */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 30px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card:hover { transform: scale(1.01); border-color: var(--text-soft); }
+.card h3 { font-size: 1.2rem; margin-bottom: 15px; }
+.card p { color: var(--text-soft); font-size: 0.95rem; flex-grow: 1; }
+
+/* Кнопки */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    transition: 0.2s;
+}
+
+.btn-black { background: var(--text); color: var(--bg); }
+.btn-outline {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 20px;
+	border-radius: 50px;
+	border: 1px solid var(--border);
+	color: var(--text);
+	text-decoration: none;
+	font-weight: 700;
+	font-size: 0.7rem;
+	transition: 0.2s;
+	width: fit-content;
+}
+
+.btn-outline:hover { 
+	background: var(--text); 
+	color: var(--bg); 
+}
+
+/* Тэги */
+.platform-tag, .tag {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: inline-block;
+    color: var(--text-soft);
+}
+
+/* Блоки кода */
+pre {
+    padding: 20px;
+    border-radius: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    margin: 20px 0;
+    background: var(--code-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.c-kw { color: var(--text); font-weight: 700; }
+.c-st { color: var(--text-soft); }             
+.c-fn { color: var(--accent-red); }            
+.c-cm { color: #444; font-style: italic; }     
+
+/* Стили для редактора Zator */
+.editor-container {
+    margin-top: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    overflow: hidden;
+}
+
+.editor-header {
+    padding: 15px 25px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.02);
+}
+
+.code-editor {
+    width: 100%;
+    height: 300px;
+    background: var(--code-bg);
+    color: var(--text);
+    border: none;
+    padding: 25px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    resize: vertical;
+}
+
+.output-panel {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 20px 25px;
+    min-height: 80px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+}
+
+.output-label {
+    font-size: 0.6rem;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Футер */
+footer {
+    padding: 60px 5vw;
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 40px;
+}
+
+footer h5 { margin-bottom: 15px; font-size: 0.8rem; color: var(--text-soft); }
+footer ul { list-style: none; }
+footer a { color: var(--text); text-decoration: none; font-size: 0.85rem; opacity: 0.6; }
+footer a:hover { opacity: 1; }
+
+.footer-bottom {
+    padding: 40px 5vw;
+    text-align: center;
+    font-size: 0.7rem;
+    opacity: 0.3;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    header nav { display: none; }
+    .hero h1, .section-title { font-size: 3.5rem; }
+}

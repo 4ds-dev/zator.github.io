@@ -1,1302 +1,418 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="images/icon-black.svg" rel="icon">
-  <title>Zator — язык для генерации AI-контента</title>
-  <meta name="description" content="Zator — специализированный язык программирования для генерации и обработки AI-контента с помощью KoboldCpp." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-  <meta name="yandex-verification" content="1a3827f7b77dbf1a" />
-  <style>
-  :root {
-    --bg: #020408;
-    --bg-soft: #03060c;
-    --panel: #060a14;
-    --panel-soft: #0a1120;
-    --text: #f1f5f9;
-    --text-soft: #94a3b8;
-    --text-muted: #64748b;
-
-    --font-family: "Cascadia Mono", sans-serif;
-    --font-optical-sizing: auto;
-    --font-weight: 700;
-
-    --primary: #06b6d4;
-    --primary-light: #22d3ee;
-    --primary-glow: rgba(34, 211, 238, 0.35);
-    --accent: #3b82f6;
-    --accent-glow: rgba(59, 130, 246, 0.25);
-    --success: #10b981;
-    --warning: #f59e0b;
-    --purple: #8b5cf6;
-    --pink: #ec4899;
-    --radius: 16px;
-    --radius-sm: 12px;
-    --radius-lg: 24px;
-    --shadow-sm: 0 4px 20px rgba(0,0,0,0.5);
-    --shadow: 0 8px 40px rgba(0,0,0,0.6);
-    --shadow-lg: 0 20px 80px rgba(0,0,0,0.7);
-    --shadow-glow: 0 0 60px rgba(34, 211, 238, 0.1);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Cascadia Mono', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
-
-  h1, h2 {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  }
-
-  #fractal-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .bg-gradient {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
-  }
-
-  .bg-gradient::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background:
-      radial-gradient(ellipse at 20% 20%, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 10%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
-      radial-gradient(ellipse at 40% 80%, rgba(139, 92, 246, 0.02) 0%, transparent 50%),
-      radial-gradient(ellipse at 90% 90%, rgba(236, 72, 153, 0.02) 0%, transparent 50%);
-    animation: bgFloat 20s ease-in-out infinite;
-  }
-
-  @keyframes bgFloat {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    33% { transform: translate(2%, 2%) rotate(1deg); }
-    66% { transform: translate(-1%, 1%) rotate(-1deg); }
-  }
-
-  .bg-grid {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at center, black 15%, transparent 70%);
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  img, video, canvas, svg {
-    max-width: 100%;
-    display: block;
-  }
-
-  code, pre {
-    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    max-width: 100%;
-    overflow-x: auto;
-    word-wrap: break-word;
-  }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: var(--bg-soft);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--panel-soft);
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
-  }
-
-  .container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 clamp(20px, 5vw, 32px);
-    position: relative;
-    z-index: 1;
-  }
-
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(20px);
-    background: rgba(2, 4, 8, 0.9);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 72px;
-    padding: 0 8px;
-  }
-
-  .nav-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .logo {
-    font-weight: 800;
-    font-size: 22px;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text);
-    white-space: nowrap;
-  }
-
-  .logo img {
-    height: 34px;
-    width: auto;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    font-weight: 500;
-    color: var(--text-soft);
-    flex-wrap: wrap;
-  }
-
-  .nav-links a:hover {
-    color: var(--text);
-  }
-
-  .nav-right {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 22px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.02);
-    color: var(--text);
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    white-space: nowrap;
-  }
-
-  .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    color: #020408;
-    border: none;
-    box-shadow: 0 12px 30px var(--primary-glow);
-  }
-
-  .btn-primary:hover {
-    box-shadow: 0 16px 40px var(--primary-glow);
-    transform: translateY(-3px);
-  }
-
-  .gradient-text {
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 50%, var(--purple) 100%);
-    font-family: "Playfair Display", serif;
-    font-style: italic;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    background-size: 200% 200%;
-    animation: gradientShift 5s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  .hero p {
-    font-size: clamp(16px, 2vw, 20px);
-    color: var(--text-soft);
-    max-width: 580px;
-    margin-bottom: 36px;
-    line-height: 1.7;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .hero-actions .btn {
-    padding: 12px 24px;
-    font-size: 14px;
-  }
-
-  .hero-card {
-    background: linear-gradient(180deg, rgba(6,10,20,0.95), rgba(2,4,8,0.98));
-    border-radius: var(--radius);
-    padding: 28px;
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
-    border: 1px solid rgba(255,255,255,0.04);
-    min-width: 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
-  }
-
-  .hero-card .code-title {
-    font-weight: 600;
-    color: var(--text-soft);
-    margin-bottom: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    font-size: 14px;
-  }
-
-  .hero-card pre {
-    background: rgba(1, 2, 5, 0.95);
-    border-radius: var(--radius-sm);
-    padding: 20px;
-    overflow-x: auto;
-    font-size: 13.5px;
-    line-height: 1.65;
-    color: #a7f3d0;
-    margin: 0;
-    border: 1px solid rgba(255,255,255,0.03);
-    position: relative;
-  }
-
-  .code-dots {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 14px;
-  }
-
-  .code-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-
-  .code-dot.red { background: #ef4444; }
-  .code-dot.yellow { background: #f59e0b; }
-  .code-dot.green { background: #10b981; }
-
-  .tag {
-    font-size: 11px;
-    padding: 5px 12px;
-    border-radius: 100px;
-    background: rgba(6, 182, 212, 0.08);
-    color: var(--primary-light);
-    font-weight: 600;
-    border: 1px solid rgba(6, 182, 212, 0.2);
-    white-space: nowrap;
-  }
-
-  section {
-    padding: 96px 0;
-    position: relative;
-  }
-
-  .section-header {
-    text-align: center;
-    max-width: 760px;
-    margin: 0 auto 64px;
-  }
-
-  .section-label {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--primary-light);
-    margin-bottom: 14px;
-    padding: 5px 12px;
-    background: rgba(6, 182, 212, 0.06);
-    border-radius: 100px;
-    border: 1px solid rgba(6, 182, 212, 0.15);
-  }
-
-  .section-header h2 {
-    font-size: clamp(32px, 4.5vw, 48px);
-    letter-spacing: -1px;
-    margin: 0 0 16px;
-    font-weight: 800;
-    line-height: 1.15;
-    word-break: break-word;
-  }
-
-  .section-header p {
-    font-size: clamp(15px, 1.8vw, 18px);
-    color: var(--text-soft);
-    line-height: 1.7;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    min-width: 0;
-  }
-
-  .feature-card {
-    background: linear-gradient(180deg, rgba(6,10,20,0.8), rgba(2,4,8,0.9));
-    border-radius: var(--radius-sm);
-    padding: 28px;
-    border: 1px solid rgba(255,255,255,0.04);
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-    min-width: 0;
-  }
-
-  .feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow), var(--shadow-glow);
-    border-color: rgba(6, 182, 212, 0.15);
-  }
-
-  .feature-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #020408;
-    font-weight: 800;
-    font-size: 22px;
-    margin-bottom: 18px;
-    box-shadow: 0 8px 25px var(--primary-glow);
-    flex-shrink: 0;
-  }
-
-  .feature-card h3 {
-    margin: 0 0 10px;
-    font-size: 19px;
-    font-weight: 700;
-  }
-
-  .feature-card p {
-    margin: 0;
-    color: var(--text-soft);
-    line-height: 1.65;
-  }
-
-  .examples-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 28px;
-    min-width: 0;
-  }
-
-  .example-card {
-    background: linear-gradient(180deg, rgba(6,10,20,0.85), rgba(2,4,8,0.95));
-    border-radius: var(--radius-sm);
-    padding: 24px;
-    border: 1px solid rgba(255,255,255,0.04);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-    min-width: 0;
-  }
-
-  .example-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--accent), var(--purple));
-    opacity: 0;
-    transition: var(--transition);
-  }
-
-  .example-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    border-color: rgba(255,255,255,0.06);
-  }
-
-  .example-card:hover::before {
-    opacity: 1;
-  }
-
-  .example-card h4 {
-    margin: 0 0 14px;
-    font-size: 18px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .example-card h4::before {
-    content: '';
-    font-size: 15px;
-  }
-
-  .example-card pre {
-    background: rgba(1, 2, 5, 0.98);
-    border-radius: var(--radius-sm);
-    padding: 18px;
-    overflow-x: auto;
-    font-size: 13px;
-    line-height: 1.65;
-    color: #a7f3d0;
-    margin: 0;
-    border: 1px solid rgba(255,255,255,0.03);
-  }
-
-  .docs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
-    min-width: 0;
-  }
-
-  .doc-card {
-    background: linear-gradient(180deg, rgba(6,10,20,0.8), rgba(2,4,8,0.9));
-    border-radius: var(--radius-sm);
-    padding: 24px;
-    border: 1px solid rgba(255,255,255,0.04);
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-    min-width: 0;
-  }
-
-  .doc-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    transform: scaleX(0);
-    transition: var(--transition);
-  }
-
-  .doc-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    border-color: rgba(6, 182, 212, 0.12);
-  }
-
-  .doc-card:hover::after {
-    transform: scaleX(1);
-  }
-
-  .doc-card h4 {
-    margin: 0 0 8px;
-    font-size: 17px;
-    font-weight: 700;
-  }
-
-  .doc-card p {
-    margin: 0 0 16px;
-    color: var(--text-soft);
-    line-height: 1.6;
-  }
-
-  .doc-link {
-    font-weight: 600;
-    color: var(--primary-light);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: var(--transition);
-  }
-
-  .doc-link:hover {
-    gap: 10px;
-    color: var(--text);
-  }
-
-  .articles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 28px;
-    min-width: 0;
-  }
-
-  .article-card {
-    background: linear-gradient(180deg, rgba(6,10,20,0.85), rgba(2,4,8,0.95));
-    border-radius: var(--radius-sm);
-    padding: 24px;
-    border: 1px solid rgba(255,255,255,0.04);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-    min-width: 0;
-  }
-
-  .article-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
-    opacity: 0;
-    transition: var(--transition);
-  }
-
-  .article-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    border-color: rgba(255,255,255,0.06);
-  }
-
-  .article-card:hover::before {
-    opacity: 1;
-  }
-
-  .article-card h4 {
-    margin: 0 0 10px;
-    font-size: 17px;
-    line-height: 1.45;
-    font-weight: 700;
-  }
-
-  .article-card .article-desc {
-    color: var(--text-soft);
-    margin: 0 0 18px;
-    line-height: 1.65;
-    font-size: 14px;
-  }
-
-  .article-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .article-source {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .article-source .platform {
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .platform-habr { background: rgba(255, 120, 80, 0.08); color: #ff7850; border: 1px solid rgba(255, 120, 80, 0.2); }
-  .platform-dtf { background: rgba(78, 166, 255, 0.08); color: #4ea6ff; border: 1px solid rgba(78, 166, 255, 0.2); }
-  .platform-vc { background: rgba(255, 180, 0, 0.08); color: #ffb400; border: 1px solid rgba(255, 180, 0, 0.2); }
-  .platform-dev { background: rgba(255, 255, 255, 0.05); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.12); }
-  .platform-medium { background: rgba(175, 175, 175, 0.05); color: #afafaf; border: 1px solid rgba(175, 175, 175, 0.12); }
-  .platform-linkedin { background: rgba(50, 133, 168, 0.05); color: #afafaf; border: 1px solid rgba(50, 133, 168, 0.12); }
-
-  .article-date {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .download-highlight {
-    background: linear-gradient(180deg, rgba(6, 182, 212, 0.05), rgba(59, 130, 246, 0.02));
-    border: 1px solid rgba(6, 182, 212, 0.1);
-    border-radius: var(--radius-lg);
-    padding: 36px;
-    text-align: center;
-    margin-bottom: 40px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .download-highlight::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(6, 182, 212, 0.03) 0%, transparent 70%);
-    animation: rotate 20s linear infinite;
-  }
-
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .download-highlight > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .community-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
-    min-width: 0;
-  }
-
-  .community-card {
-    background: linear-gradient(180deg, rgba(6,10,20,0.8), rgba(2,4,8,0.9));
-    border-radius: var(--radius-sm);
-    padding: 32px 24px;
-    border: 1px solid rgba(255,255,255,0.04);
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition);
-    min-width: 0;
-  }
-
-  .community-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    border-color: rgba(255,255,255,0.06);
-  }
-
-  .community-card .icon {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 18px;
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .community-card h4 {
-    margin: 0 0 10px;
-    font-size: 19px;
-    font-weight: 700;
-  }
-
-  .community-card p {
-    margin: 0 0 22px;
-    color: var(--text-soft);
-    line-height: 1.6;
-  }
-
-  footer {
-    padding: 64px 0 48px;
-    background: #010204;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    position: relative;
-  }
-
-  .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 40px;
-    margin-bottom: 40px;
-    min-width: 0;
-  }
-
-  .footer-column h5 {
-    margin: 0 0 14px;
-    font-size: 16px;
-    color: var(--text);
-  }
-
-  .footer-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    color: var(--text-soft);
-  }
-
-  .footer-column a:hover {
-    color: var(--text);
-  }
-
-  .footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    color: var(--text-soft);
-    font-size: 14px;
-  }
-
-  @media (max-width: 1024px) {
-    .hero-grid {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-
-    .hero {
-      padding: 90px 0 70px;
-    }
-
-    .hero-card {
-      order: -1;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding: 0 20px;
-    }
-
-    .nav {
-      flex-wrap: wrap;
-      gap: 16px;
-      min-height: auto;
-      padding: 14px 0;
-    }
-
-    .nav-left {
-      width: 100%;
-      justify-content: space-between;
-    }
-
-    .nav-links {
-      display: none;
-    }
-
-    .nav-right {
-      width: 100%;
-      justify-content: flex-start;
-      gap: 12px;
-    }
-
-    .nav-right .btn {
-      padding: 10px 16px;
-      font-size: 13px;
-    }
-
-    .hero {
-      padding: 64px 0 48px;
-    }
-
-    .hero-actions {
-      flex-direction: column;
-      width: 100%;
-      gap: 12px;
-    }
-
-    .hero-actions .btn {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .hero-card {
-      padding: 20px;
-    }
-
-    .hero-card pre {
-      font-size: 12px;
-      padding: 14px;
-    }
-
-    section {
-      padding: 64px 0;
-    }
-
-    .section-header {
-      margin-bottom: 48px;
-    }
-
-    .section-header h2 {
-      font-size: 28px;
-    }
-
-    .section-header p {
-      font-size: 15px;
-    }
-
-    .features-grid,
-    .examples-grid,
-    .articles-grid,
-    .docs-grid,
-    .community-grid,
-    .footer-grid {
-      grid-template-columns: 1fr;
-      gap: 18px;
-    }
-
-    .feature-card,
-    .example-card,
-    .article-card,
-    .doc-card,
-    .community-card {
-      padding: 22px;
-    }
-
-    .footer-bottom {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 13px;
-    }
-
-    .download-highlight {
-      padding: 28px 20px;
-    }
-  }
-
-  .code-editor {
-    width: 100%;
-    height: 220px;
-    background: #0d1117;
-    color: #e6edf3;
-    white-space: nowrap;
-    overflow-x: auto;
-    word-wrap: break-word;
-    border: 1px solid #30363d;
-    border-radius: 12px;
-    padding: 16px;
-    font-family: 'Cascadia Mono', 'Fira Code', monospace;
-    font-size: 14px;
-    line-height: 1.5;
-    resize: vertical;
-    outline: none;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-  }
-
-  .code-editor::selection {
-    background: #264f78;
-  }
-
-  .code-editor::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  .code-editor::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .code-editor::-webkit-scrollbar-thumb {
-    background: #30363d;
-    border-radius: 6px;
-  }
-
-  .code-editor::-webkit-scrollbar-thumb:hover {
-    background: #484f58;
-  }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="images/icon-black.svg" rel="icon">
+    <title>Zator — Playground</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Дополнительные стили для интеграции редактора */
+        .editor-container {
+            margin-top: 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        .editor-container:focus-within {
+            border-color: var(--text-soft);
+        }
+        .editor-header {
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+        }
+        .code-editor {
+            width: 100%;
+            height: 300px;
+            background: var(--code-bg);
+            color: var(--text);
+            border: none;
+            padding: 25px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            outline: none;
+            resize: vertical;
+            display: block;
+        }
+        .output-panel {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            padding: 20px 25px;
+            min-height: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text);
+            white-space: pre-wrap;
+        }
+        .output-label {
+            font-size: 0.6rem;
+            color: var(--text-soft);
+            margin-bottom: 10px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .dot-group { display: flex; gap: 8px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--border); }
+    </style>
 </head>
 <body>
-  <canvas id="fractal-canvas"></canvas>
 
-  <div class="bg-gradient"></div>
-  <div class="bg-grid"></div>
+    <div class="grid-bg"></div>
 
-  <header>
-    <div class="container">
-      <div class="nav">
-        <div class="nav-left">
-          <a href="/#" class="logo">
-            <img src="images/logo.svg" alt="Zator logo" height="34">
-            Zator
-          </a>
-          <nav class="nav-links">
-            <a href="/#features">Возможности</a>
-            <a href="/#examples">Примеры</a>
-            <a href="/#articles">Статьи</a>
-            <a href="/#community">Сообщество</a>
-          </nav>
+    <header>
+        <div class="logo-box ndot">
+            <img src="images/icon-black.svg" alt="Logo" height="34" style="margin-right: 10px;">
+            ZATOR
         </div>
-        <div class="nav-right">
-          <a href="/#docs" class="btn">Документация</a>
-          <a href="/#download" class="btn btn-primary">Скачать</a>
+        <nav class="ndot">
+            <a href="/#features">Features</a>
+            <a href="/#examples">Examples</a>
+            <a href="#articles">Articles</a>
+            <a href="/#community">Community</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" style="min-height: auto; padding-top: 40px;">
+            <p class="hero-badge ndot">Interactive Beta</p>
+            <h1 class="section-title" style="opacity: 1; transform: translateY(0px); transition: 0.6s ease-out;">TRY<br>ZATOR<span style="color: var(--accent-red);">.</span></h1>
+            <p style="max-width: 600px; color: var(--text-soft);">
+                Поэкспериментируйте с синтаксисом Zator прямо в браузере. Эта среда симулирует неполноценную логику выполнения скриптов.
+            </p>
+
+            <div class="editor-container">
+                <div class="editor-header">
+                    <div class="dot-group">
+                        <div class="dot" style="background: var(--accent-red); border: none;"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <span class="ndot" style="font-size: 0.7rem; opacity: 0.5;">zator browser</span>
+                    <button onclick="runZator()" class="btn-outline ndot" style="margin: 0; padding: 6px 16px;">Run Script</button>
+                </div>
+
+                <textarea id="zator-code" class="code-editor" spellcheck="false">// Пример синтаксиса Zator
+var prompt = "Кобольд-маг, зеленый фон"
+var img = generate_img(prompt, 512, 512)
+var cropped = chroma_key_crop(img, 10, 10, 3.0)
+save_img(cropped, "character.png")
+print("Done.")</textarea>
+                
+                <div class="output-panel">
+                    <span class="output-label ndot">Console Output</span>
+                    <div id="zator-output" style="opacity: 0.8;">// Результат появится здесь...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>
+            <h5 class="ndot">Zator</h5>
+            <ul>
+                <li><a href="/#features">Возможности</a></li>
+                <li><a href="/#examples">Примеры</a></li>
+                <li><a href="https://github.com/4ds-dev/zator">GitHub</a></li>
+            </ul>
         </div>
-      </div>
+        <div>
+            <h5 class="ndot">Community</h5>
+            <ul>
+                <li><a href="https://t.me/test4ds">Telegram</a></li>
+                <li><a href="https://t.me/testhleb">Support</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 class="ndot">Legal</h5>
+            <ul>
+                <li><a href="https://github.com/4ds-dev/zator?tab=MIT-1-ov-file">License (MIT)</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <div class="footer-bottom ndot">
+        2026 Zator. Бебебе. 
     </div>
-  </header>
 
-  <section id="interpreter">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">Запуск кода</span>
-        <h2>Попробовать <span class="gradient-text">Zator</span></h2>
-        <p>
-          Запуск кода в Zator (без save_img, save_txt, с неполной реализацией generate_img, generate_text)
-        </p>
-      </div>
-      <div class="hero-card" style="margin-top:20px;">
-        <div class="code-dots">
-          <div class="code-dot red"></div>
-          <div class="code-dot yellow"></div>
-          <div class="code-dot green"></div>
-          <button onclick="runZator()" class="btn" style="margin-left: auto">Run</button>
-        </div>
-        <textarea id="zator-code" class="code-editor">
-context = "Ты помощник"
+    <script>
+		function runZator() {
+			const code = document.getElementById("zator-code").value;
+			const z = new ZatorInterpreter();
+			const result = z.run(code);
+			document.getElementById("zator-output").textContent = result;
+		}
+	</script>
 
-var name = "Мир"
-var text = generate_text("Привет, {name}", context, 100)
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			// Создаем и внедряем попап для эндпоинтов
+			const dotGroup = document.querySelector(".dot-group");
+			if (dotGroup) {
+				dotGroup.style.cursor = "pointer";
 
-print(text)
-        </textarea>
-        <pre><code id="zator-output"></code></pre>
-      </div>
-    </div>
-  </section>
+				const panel = document.createElement("div");
+				panel.id = "endpoint-settings";
+				panel.style.display = "none";
+				panel.style.position = "absolute";
+				panel.style.top = "100%";
+				panel.style.left = "20px";
+				panel.style.marginTop = "10px";
+				panel.style.background = "var(--card-bg, #1a1a1a)";
+				panel.style.border = "1px solid var(--border, #333)";
+				panel.style.padding = "15px";
+				panel.style.borderRadius = "12px";
+				panel.style.zIndex = "100";
+				panel.style.boxShadow = "0 10px 30px rgba(0,0,0,0.5)";
+				panel.innerHTML = `
+					<div style="margin-bottom: 12px;">
+						<label style="font-family: 'Inter', sans-serif; font-size: 0.7rem; color: #888; display: block; margin-bottom: 5px;">TEXT ENDPOINT</label>
+						<input type="text" id="text-endpoint" value="https://api.openai.com/v1/completions" style="width: 250px; padding: 8px; background: var(--code-bg, #0d0d0d); border: 1px solid var(--border, #333); color: var(--text, #fff); border-radius: 6px; font-family: 'JetBrains Mono', monospace; outline: none;">
+					</div>
+					<div>
+						<label style="font-family: 'Inter', sans-serif; font-size: 0.7rem; color: #888; display: block; margin-bottom: 5px;">IMAGE ENDPOINT</label>
+						<input type="text" id="image-endpoint" value="https://api.openai.com/v1/images/generations" style="width: 250px; padding: 8px; background: var(--code-bg, #0d0d0d); border: 1px solid var(--border, #333); color: var(--text, #fff); border-radius: 6px; font-family: 'JetBrains Mono', monospace; outline: none;">
+					</div>
+				`;
+				
+				const header = document.querySelector(".editor-header");
+				if (header) {
+					header.style.position = "relative";
+					header.appendChild(panel);
+				}
 
-  <script>
-    function runZator() {
-      const code = document.getElementById("zator-code").value;
-      const z = new ZatorInterpreter();
-      const result = z.run(code);
-      document.getElementById("zator-output").textContent = result;
-    }
-  </script>
+				dotGroup.addEventListener("click", () => {
+					panel.style.display = panel.style.display === "none" ? "block" : "none";
+				});
+			}
+		});
 
-  <script>
-    class ZatorInterpreter {
-      constructor() {
-        this.vars = {};
-        this.context = "";
-      }
+		// Функция запуска теперь асинхронная
+		async function runZator() {
+			const code = document.getElementById("zator-code").value;
+			const outputDiv = document.getElementById("zator-output");
+			
+			// Очищаем консоль перед запуском
+			outputDiv.innerHTML = ""; 
+			
+			const z = new ZatorInterpreter();
+			
+			// Забираем эндпоинты в контекст интерпретатора
+			const textEndpoint = document.getElementById("text-endpoint")?.value || "";
+			const imageEndpoint = document.getElementById("image-endpoint")?.value || "";
+			z.vars["SYS_TEXT_ENDPOINT"] = textEndpoint;
+			z.vars["SYS_IMAGE_ENDPOINT"] = imageEndpoint;
 
-      run(code) {
-        const lines = code.split("\n").map(l => l.trim()).filter(Boolean);
-        let output = [];
+			await z.run(code);
+		}
 
-        for (let line of lines) {
-          if (line.startsWith("context")) {
-            this.context = this.evalString(line.split("=")[1]);
-          }
-          else if (line.startsWith("var ")) {
-            const [, name, expr] = line.match(/var\s+(\w+)\s*=\s*(.+)/);
-            this.vars[name] = this.evalExpr(expr);
-          }
-          else if (line.startsWith("print")) {
-            const content = line.match(/print\((.*)\)/)[1];
-            output.push(this.render(this.evalExpr(content)));
-          }
-          else if (line.includes("generate_text")) {
-            const [, name, prompt] = line.match(/var\s+(\w+)\s*=\s*generate_text\((.*?),/);
-            this.vars[name] = this.render(this.evalExpr(prompt));
-          }
-          else if (line.includes("generate_img")) {
-            const [, name] = line.match(/var\s+(\w+)\s*=/);
-            this.vars[name] = this.createWhiteImage(256, 256);
-          }
-          else if (line.startsWith("save_")) {
-            console.warn("Save disabled:", line);
-          }
-        }
+		class ZatorInterpreter {
+			constructor() {
+				this.vars = {};
+				this.functions = {};
+			}
 
-        return output.join("\n");
-      }
+			// Прямой вывод в консоль
+			printToConsole(text) {
+				const outDiv = document.getElementById("zator-output");
+				outDiv.appendChild(document.createTextNode(text + "\n"));
+			}
 
-      evalExpr(expr) {
-        expr = expr.trim();
+			// Асинхронное ожидание ввода из DOM-консоли
+			async requestConsoleInput() {
+				return new Promise((resolve) => {
+					const outputDiv = document.getElementById("zator-output");
+					
+					const inputWrapper = document.createElement("div");
+					inputWrapper.style.display = "flex";
+					inputWrapper.style.alignItems = "center";
+					inputWrapper.style.marginTop = "2px";
+					inputWrapper.style.marginBottom = "2px";
+					
+					const promptMarker = document.createElement("span");
+					promptMarker.textContent = "> ";
+					promptMarker.style.color = "var(--accent-red, #ff3333)";
+					promptMarker.style.marginRight = "8px";
 
-        if (expr.startsWith("generate_text")) {
-          const match = expr.match(/generate_text\((.*?),(.*?),(.*?)\)/);
-          if (!match) return "";
+					const inputField = document.createElement("input");
+					inputField.type = "text";
+					inputField.style.flex = "1";
+					inputField.style.background = "transparent";
+					inputField.style.border = "none";
+					inputField.style.borderBottom = "1px solid var(--border, #333)";
+					inputField.style.color = "var(--text, #fff)";
+					inputField.style.fontFamily = "'JetBrains Mono', monospace";
+					inputField.style.fontSize = "inherit";
+					inputField.style.outline = "none";
 
-          let prompt = this.evalExpr(match[1]);
-          prompt = this.render(prompt);
+					inputWrapper.appendChild(promptMarker);
+					inputWrapper.appendChild(inputField);
+					outputDiv.appendChild(inputWrapper);
+					
+					inputField.focus();
 
-          return prompt;
-        }
+					// Ждем нажатия Enter
+					inputField.addEventListener("keydown", (e) => {
+						if (e.key === "Enter") {
+							const value = inputField.value;
+							// Заменяем инпут на текст, чтобы он остался в истории консоли
+							inputWrapper.replaceWith(document.createTextNode("> " + value + "\n"));
+							resolve(value);
+						}
+					});
+				});
+			}
 
-        if (expr.startsWith("generate_img")) {
-          const match = expr.match(/generate_img\((.*?),(.*?),(.*?),(.*?)\)/);
-          if (!match) return "";
+			async run(code) {
+				const lines = code.split("\n").map(l => l.trim());
+				let inFunc = false;
+				let currentFunc = null;
+				let funcBody = [];
+				let funcArgs = [];
+				let executableLines = [];
 
-          const width = parseInt(this.evalExpr(match[3])) || 256;
-          const height = parseInt(this.evalExpr(match[4])) || 256;
+				for (let i = 0; i < lines.length; i++) {
+					let line = lines[i];
+					if (!line) continue;
 
-          return this.createWhiteImage(width, height);
-        }
+					if (line.startsWith("def ")) {
+						const match = line.match(/def\s+(\w+)\((.*?)\)/);
+						if (match) {
+							currentFunc = match[1];
+							funcArgs = match[2].split(",").map(s => s.trim()).filter(Boolean);
+							inFunc = true;
+							continue;
+						}
+					}
 
-        if (expr.startsWith('"')) {
-          return this.evalString(expr);
-        }
+					if (inFunc) {
+						if (line === "{") continue;
+						if (line === "}") {
+							this.functions[currentFunc] = { args: funcArgs, body: funcBody };
+							inFunc = false;
+							currentFunc = null;
+							funcBody = [];
+							continue;
+						}
+						funcBody.push(line);
+					} else {
+						executableLines.push(line);
+					}
+				}
 
-        if (!isNaN(expr)) return Number(expr);
+				await this.executeLines(executableLines);
+			}
 
-        if (this.vars[expr] !== undefined) return this.vars[expr];
+			async executeLines(lines) {
+				for (let line of lines) {
+					if (line.startsWith("@")) {
+						const match = line.match(/@(\w+)\s*=\s*(.+)/);
+						if (match) this.vars[match[1]] = this.evalExpr(match[2]);
+					}
+					else if (line.startsWith("var ")) {
+						const match = line.match(/var\s+(\w+)(?:\s*=\s*(.+))?/);
+						if (match) {
+							const name = match[1];
+							const expr = match[2];
+							this.vars[name] = expr ? this.evalExpr(expr) : "";
+						}
+					}
+					else if (line.startsWith("print") || line.startsWith("prunt")) {
+						const match = line.match(/(?:print|prunt)\((.*)\)/);
+						if (match) {
+							this.printToConsole(this.render(this.evalExpr(match[1])));
+						}
+					}
+					// Асинхронный вызов инпута внутри консоли
+					else if (line.startsWith("input")) {
+						const match = line.match(/input\((.*?)\)/);
+						if (match) {
+							const varName = match[1];
+							const val = await this.requestConsoleInput();
+							this.vars[varName] = val;
+						}
+					}
+					else if (line.startsWith("call ")) {
+						const match = line.match(/call\s+(\w+)\((.*?)\)/);
+						if (match) {
+							const funcName = match[1];
+							const args = match[2].split(",").map(s => this.evalExpr(s.trim()));
+							
+							if (this.functions[funcName]) {
+								const funcDef = this.functions[funcName];
+								
+								funcDef.args.forEach((argName, idx) => {
+									this.vars[argName] = args[idx];
+								});
 
-        return expr;
-      }
+								await this.executeLines(funcDef.body);
+							}
+						}
+					}
+					else if (line.startsWith("save_")) {
+						this.printToConsole(`[Система: Файл сохранен -> ${this.render(line)}]`);
+					}
+				}
+			}
 
-      evalString(str) {
-        return str.replace(/^"|"$/g, "");
-      }
+			evalExpr(expr) {
+				expr = expr.trim();
 
-      render(str) {
-        return str.replace(/\{(\w+)\}/g, (_, v) => this.vars[v] ?? "");
-      }
+				if (expr.startsWith("generate_text")) {
+					const match = expr.match(/generate_text\((.*?)(?:,.*?)*\)/);
+					if (match) {
+						const prompt = this.render(this.evalString(match[1]));
+						return `[Сгенерированный текст: ${prompt}]`;
+					}
+				}
 
-      createWhiteImage(w, h) {
-        const canvas = document.createElement("canvas");
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
+				if (expr.startsWith("generate_img")) {
+					const match = expr.match(/generate_img\((.*?)(?:,.*?)*\)/);
+					if (match) {
+						const prompt = this.render(this.evalString(match[1]));
+						return `[Сгенерированное изображение по промпту: ${prompt}]`;
+					}
+				}
+				
+				if (expr.startsWith("request")) {
+					const match = expr.match(/request\((.*?),(.*?)\)/);
+					if (match) {
+						const url = this.render(this.evalString(match[1]));
+						const method = this.render(this.evalString(match[2]));
+						return `[Ответ HTTP 200 от ${url} (${method})]`;
+					}
+				}
 
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, w, h);
+				if (expr.startsWith('"')) {
+					return this.evalString(expr);
+				}
 
-        return canvas.toDataURL();
-      }
-    }
-  </script>
+				if (!isNaN(expr)) return Number(expr);
 
-  <script>
-    (function() {
-      const canvas = document.getElementById('fractal-canvas');
-      const ctx = canvas.getContext('2d');
+				if (this.vars[expr] !== undefined) return this.vars[expr];
 
-      let width, height;
-      let particles = [];
-      let mouseX = 0, mouseY = 0;
-      let targetX = 0, targetY = 0;
+				return expr;
+			}
 
-      const config = {
-        particleCount: 80,
-        connectionDistance: 150,
-        mouseDistance: 250,
-        baseSpeed: 0.3,
-        colors: [
-          'rgba(34, 211, 238, 0.5)',
-          'rgba(59, 130, 246, 0.4)',
-          'rgba(139, 92, 246, 0.3)',
-          'rgba(6, 182, 212, 0.4)'
-        ]
-      };
+			evalString(str) {
+				return str.replace(/^"|"$/g, "");
+			}
 
-      function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      }
-
-      class Particle {
-        constructor() {
-          this.reset();
-        }
-
-        reset() {
-          this.x = Math.random() * width;
-          this.y = Math.random() * height;
-          this.vx = (Math.random() - 0.5) * config.baseSpeed;
-          this.vy = (Math.random() - 0.5) * config.baseSpeed;
-          this.size = Math.random() * 2 + 1;
-          this.color = config.colors[Math.floor(Math.random() * config.colors.length)];
-          this.angle = Math.random() * Math.PI * 2;
-          this.spin = (Math.random() - 0.5) * 0.02;
-        }
-
-        update() {
-          targetX += (mouseX - targetX) * 0.05;
-          targetY += (mouseY - targetY) * 0.05;
-
-          const dx = targetX - this.x;
-          const dy = targetY - this.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < config.mouseDistance) {
-            const force = (config.mouseDistance - dist) / config.mouseDistance;
-            this.vx += dx * force * 0.0003;
-            this.vy += dy * force * 0.0003;
-          }
-
-          this.x += this.vx;
-          this.y += this.vy;
-          this.angle += this.spin;
-
-          this.vx *= 0.99;
-          this.vy *= 0.99;
-
-          if (this.x < 0 || this.x > width) this.vx *= -1;
-          if (this.y < 0 || this.y > height) this.vy *= -1;
-
-          this.vx += (Math.random() - 0.5) * 0.02;
-          this.vy += (Math.random() - 0.5) * 0.02;
-
-          const maxSpeed = 1.5;
-          this.vx = Math.max(-maxSpeed, Math.min(maxSpeed, this.vx));
-          this.vy = Math.max(-maxSpeed, Math.min(maxSpeed, this.vy));
-        }
-
-        draw() {
-          ctx.save();
-          ctx.translate(this.x, this.y);
-          ctx.rotate(this.angle);
-
-          ctx.beginPath();
-          ctx.fillStyle = this.color;
-          for (let i = 0; i < 4; i++) {
-            const angle = (i * Math.PI / 2) + this.angle;
-            const x = Math.cos(angle) * this.size * 2;
-            const y = Math.sin(angle) * this.size * 2;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-          }
-          ctx.closePath();
-          ctx.fill();
-
-          ctx.shadowColor = this.color;
-          ctx.shadowBlur = 10;
-          ctx.beginPath();
-          ctx.arc(0, 0, this.size * 0.5, 0, Math.PI * 2);
-          ctx.fill();
-
-          ctx.restore();
-        }
-      }
-
-      function init() {
-        resize();
-        particles = [];
-        for (let i = 0; i < config.particleCount; i++) {
-          particles.push(new Particle());
-        }
-      }
-
-      function drawConnections() {
-        for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-
-            if (dist < config.connectionDistance) {
-              const opacity = (1 - dist / config.connectionDistance) * 0.25;
-              ctx.beginPath();
-              ctx.strokeStyle = `rgba(34, 211, 238, ${opacity})`;
-              ctx.lineWidth = 0.5;
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.stroke();
-            }
-          }
-        }
-      }
-
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-
-        particles.forEach(p => {
-          p.update();
-          p.draw();
-        });
-
-        drawConnections();
-        requestAnimationFrame(animate);
-      }
-
-      window.addEventListener('resize', resize);
-      window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-      });
-
-      window.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) {
-          mouseX = e.touches[0].clientX;
-          mouseY = e.touches[0].clientY;
-        }
-      });
-
-      init();
-      animate();
-    })();
-  </script>
+			render(str) {
+				return str.replace(/\{(\w+)\}/g, (_, v) => this.vars[v] !== undefined ? this.vars[v] : `{${v}}`);
+			}
+		}
+	</script>
 </body>
 </html>
