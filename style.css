@@ -8,6 +8,15 @@
     --code-bg: #0a0a0a;
 }
 
+.logo-icon {
+    width: 34px; 
+    height: 34px;
+    margin-right: 10px;
+    background-image: url('images/logo.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         --bg: #f5f5f5;
@@ -16,6 +25,9 @@
         --border: #e0e0e0;
         --text-soft: #666666;
         --code-bg: #eeeeee;
+    }
+	.logo-icon {
+        background-image: url('images/icon-black.svg');
     }
 }
 
