@@ -37,8 +37,8 @@
         <nav class="ndot">
             <a href="#features">Features</a>
             <a href="#examples">Examples</a>
+            <a href="#download">Download</a>
             <a href="#articles">Articles</a>
-            <a href="#community">Community</a>
         </nav>
     </header>
 
@@ -52,7 +52,7 @@
                 Zator — специализированный язык программирования для генерации и обработки AI-контента через KoboldCpp и Stable Diffusion.
             </p>
             <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <a href="https://github.com/4ds-dev/zator/releases/latest/download/zator.exe" class="btn btn-black ndot">Download .EXE</a>
+                <a href="#download" class="btn btn-black ndot">Get Started</a>
                 <a href="https://github.com/4ds-dev/zator/blob/main/README.md" class="btn btn-outline ndot">Documentation</a>
             </div>
         </section>
@@ -114,25 +114,29 @@ print("Story generated and published successfully!")</code></pre>
                 </div>
             </div>
         </section>
-
-        <!-- Documentation Blocks -->
-        <section id="docs">
-            <h2 class="ndot" style="margin-bottom: 40px; font-size: 1rem;">Resources</h2>
+		
+		
+        <!-- Download Section -->
+        <section id="download">
+            <h2 class="ndot" style="margin-bottom: 40px; font-size: 1rem;">Download & Source</h2>
             <div class="grid-layout">
                 <div class="card">
-                    <h3 class="ndot">Getting Started</h3>
-                    <p>Установка и ваш первый скрипт.</p>
-                    <a href="https://github.com/4ds-dev/zator/blob/main/README.md#2" class="btn btn-outline ndot" style="font-size: 0.7rem;">Open →</a>
+                    <span class="emoji">🚀</span>
+                    <h3 class="ndot">Interpreter</h3>
+                    <p>Последняя стабильная версия компилятора и интерпретатора для Windows.</p>
+                    <a href="https://github.com/4ds-dev/zator/releases/latest/download/zator.exe" class="btn btn-black ndot" style="font-size: 0.7rem;">Download .EXE</a>
                 </div>
                 <div class="card">
-                    <h3 class="ndot">AI Functions</h3>
-                    <p>Работа с generate_text и generate_img.</p>
-                    <a href="https://github.com/4ds-dev/zator/blob/main/README.md#4" class="btn btn-outline ndot" style="font-size: 0.7rem;">Open →</a>
+                    <span class="emoji">🧩</span>
+                    <h3 class="ndot">VSCode Extension</h3>
+                    <p>Подсветка синтаксиса и поддержка запуска кода .zator в Visual Studio Code.</p>
+                    <a href="https://marketplace.visualstudio.com/items?itemName=4ds.zator-vscode" target="_blank" class="btn btn-outline ndot" style="font-size: 0.7rem;">Install Extension</a>
                 </div>
                 <div class="card">
-                    <h3 class="ndot">File System</h3>
-                    <p>Сохранение и организация проектов.</p>
-                    <a href="https://github.com/4ds-dev/zator/blob/main/README.md#6" class="btn btn-outline ndot" style="font-size: 0.7rem;">Open →</a>
+                    <span class="emoji">📦</span>
+                    <h3 class="ndot">Source Code</h3>
+                    <p>Исходный код проекта, примеры скриптов и документация на GitHub.</p>
+                    <a href="https://github.com/4ds-dev/zator" target="_blank" class="btn btn-outline ndot" style="font-size: 0.7rem;">GitHub Repo</a>
                 </div>
             </div>
         </section>
@@ -167,13 +171,14 @@ print("Story generated and published successfully!")</code></pre>
     <!-- Footer -->
     <footer>
         <div>
-            <h5 class="ndot">Zator</h5>
-            <ul>
-                <li><a href="/#features">Возможности</a></li>
-                <li><a href="/#examples">Примеры</a></li>
-                <li><a href="https://github.com/4ds-dev/zator">GitHub</a></li>
-            </ul>
-        </div>
+			<h5 class="ndot">Zator</h5>
+			<ul>
+				<li><a href="/#features">Возможности</a></li>
+				<li><a href="/#examples">Примеры</a></li>
+				<li><a href="/#download">Скачать</a></li>
+				<li><a href="https://github.com/4ds-dev/zator">GitHub</a></li>
+			</ul>
+		</div>
         <div>
             <h5 class="ndot">Community</h5>
             <ul>
@@ -194,7 +199,6 @@ print("Story generated and published successfully!")</code></pre>
     </div>
 
     <script>
-        // Эффект появления при скролле
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
