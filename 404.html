@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Nothing Found</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-code {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            font-size: clamp(5rem, 20vw, 12rem);
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .clock {
+            width: clamp(80px, 18vw, 160px);
+            height: clamp(80px, 18vw, 160px);
+            border: 2px solid var(--text);
+            border-radius: 50%;
+            position: relative;
+            background: transparent;
+        }
+
+        .clock::after { 
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom;
+            background: var(--text);
+            border-radius: 4px;
+            transform: translateX(-50%);
+        }
+
+        .hour { width: 4px; height: 25%; z-index: 3; }
+        .min { width: 3px; height: 35%; z-index: 2; }
+        .sec { width: 1.5px; height: 40%; background: var(--accent-red); z-index: 1; }
+
+        .error-msg {
+            max-width: 400px;
+            margin-bottom: 40px;
+        }
+
+        .back-home {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+
+    <main class="error-container">
+        <div class="hero-badge ndot">Error occurred</div>
+        
+        <div class="error-code">
+            <span>4</span>
+            <div class="clock" id="clock">
+                <div class="hand hour" id="hour"></div>
+                <div class="hand min" id="min"></div>
+                <div class="hand sec" id="sec"></div>
+            </div>
+            <span>4</span>
+        </div>
+
+        <div class="error-msg">
+            <h3 class="ndot">Nothing to see here</h3>
+            <p>Страница, которую вы ищете, исчезла в цифровой пустоте. Но время все еще идет.</p>
+        </div>
+
+        <a href="/" class="btn btn-outline">GO BACK HOME</a>
+    </main>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const seconds = now.getSeconds();
+            const minutes = now.getMinutes();
+            const hours = now.getHours();
+
+            const secDeg = (seconds / 60) * 360;
+            const minDeg = (minutes / 60) * 360 + (seconds / 60) * 6;
+            const hourDeg = (hours / 12) * 360 + (minutes / 60) * 30;
+
+            document.getElementById('sec').style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
+            document.getElementById('min').style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
+            document.getElementById('hour').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+        }
+
+        // Обновление каждую секунду
+        setInterval(updateClock, 1000);
+        updateClock(); // Инициализация сразу
+    </script>
+</body>
+</html>
