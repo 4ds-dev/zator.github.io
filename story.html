@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="images/icon-black.svg" rel="icon">
+  <title>Zator</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;800;900&family=Oswald:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --c-magenta: #FA0080;
+      --c-cyan: #00DDFA;
+      --c-yellow: #FADD00;
+      --c-olive: #A59837;
+      --c-plum: #7A3D5D;
+      --c-teal: #3D737A;
+      --c-bg-light: #F5F5F7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--c-bg-light);
+      color: #111;
+      overflow-x: hidden;
+    }
+
+    .hero-section {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .hero-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 2;
+    }
+
+    .hero-title-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      max-width: 65%;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 7vw, 7.5rem);
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      color: #111;
+    }
+
+    .title-logo-icon {
+      height: clamp(6rem, 10vw, 15rem);
+      width: clamp(6rem, 10vw, 15rem);
+      object-fit: contain;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 30px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      max-width: 350px;
+      line-height: 1.4;
+      color: var(--c-teal);
+    }
+
+    .hero-meta a {
+      color: var(--c-teal);
+      text-decoration: underline;
+      transition: color 0.3s;
+    }
+
+    .hero-meta a:hover {
+      color: var(--c-magenta);
+    }
+
+    .pixel-canvas-container {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      margin-top: 20px;
+      z-index: 1;
+    }
+
+    #pixelCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .wave-scroll-container {
+      height: 2000vh;
+      position: relative;
+    }
+
+    .wave-sticky-wrapper {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: var(--c-plum);
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .manifesto-tag {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--c-cyan);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .svg-canvas {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .wave-text {
+      font-family: 'Oswald', sans-serif;
+      font-size: 110px;
+      fill: var(--c-yellow);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      white-space: nowrap;
+    }
+
+    .zoom-scroll-container {
+      height: 600vh;
+      position: relative;
+      background: var(--c-magenta);
+    }
+
+    .zoom-sticky-wrapper {
+      position: sticky;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px;
+      background-color: var(--c-magenta);
+    }
+
+    .tunnel-scene {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      will-change: transform;
+    }
+
+    .tunnel-wall {
+      position: absolute;
+      background: var(--c-magenta);
+      color: var(--c-yellow);
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      overflow: hidden;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      will-change: transform;
+      font-size: clamp(2.5rem, 6vw, 6.5rem);
+      line-height: 1;
+      gap: 30px;
+    }
+
+    .marquee-track-vertical {
+      display: flex;
+      flex-direction: column;
+      white-space: nowrap;
+      will-change: transform;
+      font-size: clamp(2rem, 5vw, 5rem);
+      line-height: 1;
+      gap: 20px;
+    }
+
+    .wall-top {
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      transform-origin: top center;
+      transform: rotateX(-80deg);
+    }
+
+    .wall-bottom {
+      bottom: 0;
+      width: 100%;
+      height: 100vh;
+      transform-origin: bottom center;
+      transform: rotateX(80deg);
+    }
+
+    .wall-left {
+      left: 0;
+      width: 35vw;
+      height: 100%;
+      transform-origin: left center;
+      transform: rotateY(65deg);
+    }
+
+    .wall-right {
+      right: 0;
+      width: 35vw;
+      height: 100%;
+      transform-origin: right center;
+      transform: rotateY(-65deg);
+    }
+
+    .center-square-portal {
+      position: absolute;
+      width: 38vw;
+      height: 38vh;
+      background: var(--c-plum);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+      border: 3px solid var(--c-yellow);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      will-change: transform;
+      overflow: hidden;
+    }
+
+    .timeline-scroll-container {
+      position: relative;
+      background: var(--c-plum);
+    }
+
+    .timeline-sticky-wrapper {
+      position: sticky;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .timeline-track {
+      display: flex;
+      flex-wrap: nowrap;
+      height: 100%;
+      will-change: transform;
+    }
+
+    .slide-card {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      padding: 60px;
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .slide-v0 { background-color: var(--c-plum); color: var(--c-yellow); }
+    .slide-v1 { background-color: var(--c-teal); color: var(--c-cyan); }
+    .slide-v2 { background-color: var(--c-olive); color: #ffffff; }
+    .slide-v3 { background-color: var(--c-magenta); color: var(--c-yellow); }
+    .slide-v4 { background-color: var(--c-yellow); color: var(--c-plum); }
+
+    .slide-left-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 2;
+    }
+
+    .slide-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border: 2px solid currentColor;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .slide-big-number {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(8rem, 22vw, 24rem);
+      line-height: 0.75;
+      letter-spacing: -6px;
+      margin-left: -10px;
+      user-select: none;
+      text-transform: uppercase;
+    }
+
+    .slide-right-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 30px;
+      padding-left: 40px;
+      z-index: 2;
+      border-left: 2px solid rgba(255,255,255,0.15);
+    }
+
+    .slide-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .slide-description {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 580px;
+      font-weight: 400;
+      opacity: 0.95;
+    }
+
+    .slide-code-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid currentColor;
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+
+    .slide-code-box code {
+      display: block;
+      white-space: pre;
+    }
+
+    .footer-section {
+      background-color: var(--c-plum);
+      color: var(--c-cyan);
+      min-height: 100vh;
+      padding: 40px 5vw 60px 5vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding-bottom: 30px;
+      border-bottom: 1px solid rgba(0, 221, 250, 0.2);
+      color: var(--c-yellow);
+    }
+
+    .footer-hero-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 17vw, 20rem);
+      line-height: 0.8;
+      text-transform: uppercase;
+      letter-spacing: -2px;
+      margin: 40px 0 60px 0;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: var(--c-yellow);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+    }
+
+    .contacts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+    }
+
+    .contact-card {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .contact-card h4 {
+      font-weight: 700;
+      color: var(--c-magenta);
+      margin-bottom: 6px;
+    }
+
+    .contact-card p, .contact-card a {
+      color: var(--c-cyan);
+      opacity: 0.9;
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    .contact-card a:hover {
+      color: var(--c-yellow);
+    }
+
+    .articles-container {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .article-card {
+      border-bottom: 1.5px solid var(--c-cyan);
+      padding-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .article-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .article-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--c-yellow);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .article-title:hover {
+      color: var(--c-magenta);
+    }
+
+    .article-source-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--c-magenta);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .article-desc {
+      font-size: 0.85rem;
+      color: var(--c-cyan);
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+
+    .article-read-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--c-yellow);
+      text-transform: uppercase;
+      text-decoration: underline;
+      align-self: flex-start;
+      margin-top: 4px;
+    }
+
+    .article-read-link:hover {
+      color: var(--c-magenta);
+    }
+
+    .more-articles-btn {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 12px 30px;
+      border: 2px solid var(--c-yellow);
+      color: var(--c-yellow);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .more-articles-btn:hover {
+      background-color: var(--c-yellow);
+      color: var(--c-plum);
+    }
+
+    @media (max-width: 900px) {
+      .slide-card {
+        grid-template-columns: 1fr;
+        padding: 30px;
+        gap: 20px;
+      }
+      .slide-right-col {
+        padding-left: 0;
+        border-left: none;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .hero-title-container {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero-section">
+    <div class="hero-header">
+      <div class="hero-title-container">
+        <img src="images/icon-black.svg" alt="Logo" class="title-logo-icon">
+        <h1 class="hero-title">ZATOR<br>LANG.</h1>
+      </div>
+      <div class="hero-meta">
+        <div><a href="#footer">TAKE ME DOWN</a></div>
+      </div>
+    </div>
+
+    <div class="pixel-canvas-container">
+      <canvas id="pixelCanvas"></canvas>
+    </div>
+  </section>
+
+  <div class="wave-scroll-container">
+    <div class="wave-sticky-wrapper">
+      <div class="manifesto-tag">
+        <span style="color: var(--c-yellow);">&#10033;</span> ZATOR MANIFESTO
+      </div>
+
+      <svg class="svg-canvas" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <path id="textWavePath" 
+                d="M -1600,540 
+                   C -1200,250 -800,830 -400,540 
+                   C 0,250 400,830 800,540 
+                   C 1200,250 1600,830 2000,540 
+                   C 2400,250 2800,830 3200,540 
+                   C 3600,250 4000,830 4400,540" 
+                fill="transparent" />
+        </defs>
+        
+        <text class="wave-text">
+          <textPath id="waveTextPath" href="#textWavePath" startOffset="100%">
+            NEUROSLOP AUTOMATION &#10033; KOBOLDCPP & STABLE DIFFUSION &#10033; NO PYTHON BOILERPLATE &#10033; GENERATIVE AI PIPELINES &#10033; KOBOLDCPP & STABLE DIFFUSION &#10033;
+          </textPath>
+        </text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="zoom-scroll-container">
+    <div class="zoom-sticky-wrapper">
+      <div class="tunnel-scene" id="tunnelScene">
+        
+        <div class="tunnel-wall wall-top">
+          <div class="marquee-track horizontal-track">
+            <span>TEXT & IMAGE GENERATION &#10033; ZATOR SCRIPTING &#10033; AI PIPELINES MADE EASY &#10033;</span>
+            <span>TEXT & IMAGE GENERATION &#10033; ZATOR SCRIPTING &#10033; AI PIPELINES MADE EASY &#10033;</span>
+          </div>
+        </div>
+
+        <div class="tunnel-wall wall-bottom">
+          <div class="marquee-track horizontal-track-reverse">
+            <span>TEXT & IMAGE GENERATION &#10033; ZATOR SCRIPTING &#10033; AI PIPELINES MADE EASY &#10033;</span>
+            <span>TEXT & IMAGE GENERATION &#10033; ZATOR SCRIPTING &#10033; AI PIPELINES MADE EASY &#10033;</span>
+          </div>
+        </div>
+
+        <div class="tunnel-wall wall-left">
+          <div class="marquee-track-vertical vertical-track">
+            <span>GENERATE_TEXT()</span>
+            <span>GENERATE_IMG()</span>
+            <span>SAVE_IMG()</span>
+            <span>OPEN_TXT()</span>
+            <span>F-STRINGS</span>
+          </div>
+        </div>
+
+        <div class="tunnel-wall wall-right">
+          <div class="marquee-track-vertical vertical-track-reverse">
+            <span>GENERATE_TEXT()</span>
+            <span>GENERATE_IMG()</span>
+            <span>SAVE_IMG()</span>
+            <span>OPEN_TXT()</span>
+            <span>F-STRINGS</span>
+          </div>
+        </div>
+
+        <div class="center-square-portal" id="centerSquare">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-scroll-container">
+    <div class="timeline-sticky-wrapper">
+      <div class="timeline-track" id="timelineTrack">
+        
+        <div class="slide-card slide-v0">
+          <div class="slide-left-col">
+            <div class="slide-tag">RELEASE 0.0.0 &#10033; 2025-10-01</div>
+            <div class="slide-big-number">v0.0.0</div>
+          </div>
+          <div class="slide-right-col">
+            <h2 class="slide-title">FIRST VERSION</h2>
+            <p class="slide-description">
+              The first version featuring text and image generation.
+            </p>
+            <div class="slide-code-box">
+              <code>var text = generate_text("Hello, world!")
+var img = generate_img("Beautiful landscape")</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-card slide-v1">
+          <div class="slide-left-col">
+            <div class="slide-tag" style="border-color: var(--c-cyan); color: var(--c-cyan);">RELEASE 0.0.1 &#10033; 2025-12-15</div>
+            <div class="slide-big-number">v0.0.1</div>
+          </div>
+          <div class="slide-right-col">
+            <h2 class="slide-title" style="color: var(--c-yellow);">IMAGE PROCESSING</h2>
+            <p class="slide-description" style="color: #fff;">
+              Added image processing support (chroma_key, scale).
+            </p>
+            <div class="slide-code-box" style="border-color: var(--c-cyan); color: var(--c-cyan);">
+              <code>var processed = chroma_key(img, "#00FF00")
+var scaled = scale(processed, 1024, 1024)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-card slide-v2">
+          <div class="slide-left-col">
+            <div class="slide-tag" style="border-color: var(--c-yellow); color: var(--c-yellow);">RELEASE 0.0.2 &#10033; 2026-02-20</div>
+            <div class="slide-big-number" style="color: var(--c-yellow);">v0.0.2</div>
+          </div>
+          <div class="slide-right-col">
+            <h2 class="slide-title" style="color: var(--c-yellow);">FUNCTIONS & IMPORTS</h2>
+            <p class="slide-description">
+              Functions, function parameters, library imports, HTTP requests, exec_cmd, and execution order fixed.
+            </p>
+            <div class="slide-code-box" style="border-color: var(--c-yellow); color: var(--c-yellow);">
+              <code>import http
+def my_func(param) {
+  exec_cmd("echo " + param)
+}</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-card slide-v3">
+          <div class="slide-left-col">
+            <div class="slide-tag" style="border-color: var(--c-cyan); color: var(--c-cyan);">RELEASE 0.0.3 &#10033; 2026-05-12</div>
+            <div class="slide-big-number" style="color: var(--c-cyan);">v0.0.3</div>
+          </div>
+          <div class="slide-right-col">
+            <h2 class="slide-title" style="color: var(--c-yellow);">DEBUG MODE & API</h2>
+            <p class="slide-description" style="color: #fff;">
+              Debug mode, custom API endpoints, open_txt/open_img, calling functions without call, unified interpreter, function parameter fixes, string interpolation, text generation timeout, request rework, save_txt/save_img fixes, and context removed.
+            </p>
+            <div class="slide-code-box" style="border-color: var(--c-cyan); color: var(--c-cyan);">
+              <code>var txt = open_txt("prompt.txt")
+var res = generate_text(txt, timeout=30)
+save_img("out.png", res_img)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-card slide-v4">
+          <div class="slide-left-col">
+            <div class="slide-tag" style="border-color: var(--c-plum); color: var(--c-plum);">RELEASE 0.0.4 &#10033; 2026-05-12</div>
+            <div class="slide-big-number">v0.0.4</div>
+          </div>
+          <div class="slide-right-col">
+            <h2 class="slide-title">LUAJIT FORK & F-STRINGS</h2>
+            <p class="slide-description">
+              LuaJIT fork with Python-like f-strings support, relative path imports (relative to the executed file), and def which is translated to function.
+            </p>
+            <div class="slide-code-box" style="border-color: var(--c-plum); color: var(--c-plum);">
+              <code>import "./utils/helpers"
+
+def build_prompt(name)
+  return f"Hello, {name}!"
+end</code>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-section" id="footer">
+    <div>
+      <div class="footer-top-bar">
+        <span>■ ZATOR DSL BY 4DS-DEV</span>
+        <span>DOCUMENTATION & LINKS</span>
+      </div>
+
+      <h2 class="footer-hero-title">GET STARTED</h2>
+
+      <div class="footer-grid">
+        <div class="contacts-list">
+		  <div class="contact-card">
+            <h4>MAIN PAGE</h4>
+            <p><a href="https://zapor.2bd.net">RETURN</a></p>
+          </div>
+
+          <div class="contact-card">
+            <h4>DOWNLOAD</h4>
+            <p><a href="https://github.com/4ds-dev/zator/releases/latest" target="_blank" rel="noopener">https://github.com/4ds-dev/zator/releases/latest</a></p>
+          </div>
+
+          <div class="contact-card">
+            <h4>SOURCE CODE</h4>
+            <p><a href="https://github.com/4ds-dev/zator/" target="_blank" rel="noopener">https://github.com/4ds-dev/zator/</a></p>
+          </div>
+
+          <div class="contact-card">
+            <h4>DEVELOPER EMAIL</h4>
+            <p><a href="mailto:4ds.dev@zapor.2bd.net">4ds.dev@zapor.2bd.net</a></p>
+          </div>
+        </div>
+
+        <div class="articles-container">
+          <div class="article-card">
+            <div class="article-card-header">
+              <a href="https://habr.com/ru/articles/1002076/" target="_blank" rel="noopener" class="article-title">A Language for AI Content</a>
+              <span class="article-source-tag">HABR</span>
+            </div>
+            <p class="article-desc">A detailed review of the language for creating AI-generated content.</p>
+            <a href="https://habr.com/ru/articles/1002076/" target="_blank" rel="noopener" class="article-read-link">Read →</a>
+          </div>
+
+          <div class="article-card">
+            <div class="article-card-header">
+              <a href="https://zator.hashnode.dev/zator-tutorial-automate-ai-content-pipelines-with-a-specialized-dsl" target="_blank" rel="noopener" class="article-title">Automate AI Content Pipelines</a>
+              <span class="article-source-tag">HASHNODE</span>
+            </div>
+            <p class="article-desc">Build powerful text and image generation workflows using a specialized DSL.</p>
+            <a href="https://zator.hashnode.dev/zator-tutorial-automate-ai-content-pipelines-with-a-specialized-dsl" target="_blank" rel="noopener" class="article-read-link">Read →</a>
+          </div>
+
+          <div class="article-card">
+            <div class="article-card-header">
+              <a href="https://dev.to/4ds-dev/from-30-lines-of-python-to-5-lines-of-zator-building-ai-pipelines-the-simple-way-81a" target="_blank" rel="noopener" class="article-title">From 30 Lines to 5</a>
+              <span class="article-source-tag">DEV.TO</span>
+            </div>
+            <p class="article-desc">How to reduce AI pipeline code by switching to Zator.</p>
+            <a href="https://dev.to/4ds-dev/from-30-lines-of-python-to-5-lines-of-zator-building-ai-pipelines-the-simple-way-81a" target="_blank" rel="noopener" class="article-read-link">Read →</a>
+          </div>
+
+          <a href="https://zapor.2bd.net/articles" target="_blank" rel="noopener" class="more-articles-btn">MORE</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    const canvas = document.getElementById('pixelCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const paletteRGB = [
+      [250, 0, 128],
+      [0, 221, 250],
+      [250, 221, 0],
+      [165, 152, 55],
+      [122, 61, 93],
+      [61, 115, 122]
+    ];
+
+    function VerticalColor(t) {
+      t = Math.max(0, Math.min(1, t));
+      const count = paletteRGB.length - 1;
+      const scaled = t * count;
+      const idx = Math.floor(scaled);
+      const frac = scaled - idx;
+
+      if (idx >= count) return `rgb(${paletteRGB[count].join(',')})`;
+
+      const c1 = paletteRGB[idx];
+      const c2 = paletteRGB[idx + 1];
+
+      const r = Math.round(c1[0] + (c2[0] - c1[0]) * frac);
+      const g = Math.round(c1[1] + (c2[1] - c1[1]) * frac);
+      const b = Math.round(c1[2] + (c2[2] - c1[2]) * frac);
+
+      return `rgb(${r},${g},${b})`;
+    }
+
+    const pixelSize = 10;
+    const gap = 2;
+    let cols, rows;
+    let time = 0;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      cols = Math.floor(canvas.width / (pixelSize + gap));
+      rows = Math.floor(canvas.height / (pixelSize + gap));
+    }
+
+    function drawPixelWave() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      time += 0.03;
+
+      for (let c = 0; c < cols; c++) {
+        const sinVal = Math.sin(c * 0.08 + time) * 0.35 + Math.sin(c * 0.04 - time * 0.5) * 0.15;
+        const normHeight = 0.5 + sinVal;
+        const columnHeight = Math.max(1, Math.floor(normHeight * rows));
+
+        for (let r = 0; r < columnHeight; r++) {
+          const t = r / Math.max(1, columnHeight - 1);
+          ctx.fillStyle = VerticalColor(t);
+          ctx.fillRect(c * (pixelSize + gap), r * (pixelSize + gap), pixelSize, pixelSize);
+        }
+      }
+
+      requestAnimationFrame(drawPixelWave);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    requestAnimationFrame(drawPixelWave);
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.to("#waveTextPath", {
+      attr: { startOffset: "-110%" },
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".wave-scroll-container",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.2,
+        pin: ".wave-sticky-wrapper"
+      }
+    });
+
+    const tunnelTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".zoom-scroll-container",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1,
+        pin: ".zoom-sticky-wrapper"
+      }
+    });
+
+    tunnelTl
+      .to("#centerSquare", {
+        scale: 14,
+        borderRadius: "0px",
+        ease: "power2.inOut",
+        duration: 1
+      })
+      .to("#tunnelScene", {
+        scale: 2.2,
+        ease: "power1.inOut",
+        duration: 1
+      }, 0);
+
+    gsap.to(".horizontal-track", {
+      xPercent: -30,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".zoom-scroll-container",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.5
+      }
+    });
+
+    gsap.to(".horizontal-track-reverse", {
+      xPercent: 30,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".zoom-scroll-container",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.5
+      }
+    });
+
+    gsap.to(".vertical-track", {
+      yPercent: -20,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".zoom-scroll-container",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.5
+      }
+    });
+
+    gsap.to(".vertical-track-reverse", {
+      yPercent: 20,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".zoom-scroll-container",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.5
+      }
+    });
+
+    const slides = gsap.utils.toArray('.slide-card');
+    const numSlides = slides.length;
+    const timelineTrack = document.getElementById('timelineTrack');
+    const timelineContainer = document.querySelector('.timeline-scroll-container');
+
+    timelineTrack.style.width = `${numSlides * 100}vw`;
+    timelineContainer.style.height = `${numSlides * 200}vh`;
+
+    const timelineTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".timeline-scroll-container",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.5,
+        pin: ".timeline-sticky-wrapper",
+        snap: {
+          snapTo: 1 / (numSlides * 2 - 1),
+          duration: { min: 0.15, max: 0.4 },
+          ease: "power1.inOut"
+        }
+      }
+    });
+
+    for (let i = 0; i < numSlides - 1; i++) {
+      const targetXPercent = - (100 / numSlides) * (i + 1);
+      timelineTl.to(timelineTrack, {
+        xPercent: targetXPercent,
+        ease: "power2.inOut",
+        duration: 1
+      }, (2 * i + 1));
+    }
+
+    timelineTl.to({}, { duration: 1 }, (2 * numSlides - 1));
+  </script>
+</body>
+</html>

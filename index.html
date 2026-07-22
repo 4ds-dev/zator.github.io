@@ -19,7 +19,7 @@
             
             if (!userLang.toLowerCase().startsWith('ru')) {
                 sessionStorage.setItem('lang_redirected', 'true');
-                window.location.href = 'en.html'; 
+                window.location.href = 'en'; 
             }
         }
     })();
@@ -46,14 +46,13 @@
 	<div>
         <!-- Hero Section -->
         <section class="hero">
-            <p class="hero-badge ndot">Available Now</p>
             <h1>ZATOR<br>MAKES<br>ALL BETTER<span style="color: var(--accent-red);">.</span></h1>
             <p style="max-width: 500px; color: var(--text-soft);">
                 Zator — специализированный язык программирования для генерации и обработки AI-контента через KoboldCpp и Stable Diffusion.
             </p>
             <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                 <a href="#download" class="btn btn-black ndot">Get Started</a>
-                <a href="https://github.com/4ds-dev/zator/blob/main/README.md" class="btn btn-outline ndot">Documentation</a>
+                <a href="/story" class="btn btn-outline ndot">Посмотреть шоукейс Zator</a>
             </div>
         </section>
 	
@@ -130,9 +129,7 @@ print("Story generated and published successfully!")</code></pre>
                     <span class="emoji">🧩</span>
                     <h3 class="ndot">VSCode Extension</h3>
                     <p>Подсветка синтаксиса и поддержка запуска кода .zator в Visual Studio Code.</p>
-                    <a href="https://open-vsx.org/extension/4ds/zator-vscode" target="_blank" class="btn btn-outline ndot" style="font-size: 0.7rem;">Install Extension
-					
-					<a href="https://marketplace.visualstudio.com/items?itemName=4ds.zator-vscode" target="_blank" class="btn btn-outline ndot" style="font-size: 0.7rem;">Install Extension (old)</a>
+                    <a href="https://marketplace.visualstudio.com/items?itemName=4ds.zator-vscode" target="_blank" class="btn btn-outline ndot" style="font-size: 0.7rem;">Install Extension</a>
                 </div>
                 <div class="card">
                     <span class="emoji">📦</span>
@@ -197,7 +194,7 @@ print("Story generated and published successfully!")</code></pre>
     </footer>
 
     <div class="footer-bottom ndot">
-        2026 Zator. Бебебе. 
+        2026 Zator. Бебебе.
     </div>
 
     <script>
